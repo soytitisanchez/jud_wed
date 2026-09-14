@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corrector de textos judiciales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="../../manifest.webmanifest">
+<meta name="theme-color" content="#1F3350">
+</head>
+<body>
+<a href="../../index.html" style="position:fixed;bottom:16px;left:16px;z-index:999;background:#1F3350;border:1px solid #9C7A32;color:#EBE3CD;font-family:'Libre Franklin',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:.76rem;font-weight:600;text-decoration:none;padding:7px 13px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.25);">← Judweb</a>
+<div class="layout">
+
+  <div class="sheet">
+    <header class="doc-head">
+      <div class="titles">
+        <h1>Corrector de textos judiciales</h1>
+        <p id="metaLine">Ejercicio N.º <strong id="exNum">1</strong> de 1000<span class="dot">·</span><span id="wordCount">0</span> palabras<span class="dot">·</span>5 minutos</p>
+      </div>
+      <div class="seal" id="seal">
+        <div class="time" id="timeLeft">05:00</div>
+        <div class="lbl">restante</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="meta-row">
+        <span><strong>Instrucción:</strong> corregí la ortografía sin agregar ni quitar palabras.</span>
+      </div>
+      <textarea id="editor" spellcheck="false"></textarea>
+      <div class="result-view" id="resultView"></div>
+
+      <div class="controls">
+        <div>
+          <button class="btn" id="startBtn">Comenzar corrección</button>
+          <button class="btn gold" id="finishBtn" style="display:none;">Finalizar ahora</button>
+        </div>
+        <button class="btn secondary" id="newBtn">Nuevo texto</button>
+      </div>
+    </div>
+
+    <div class="results" id="resultsPanel">
+      <h2>Resultado de la corrección</h2>
+      <div class="score-band">
+        <div class="score-number" id="scoreNumber">0%</div>
+        <div class="score-label">de palabras corregidas correctamente</div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+      <p class="accuracy-line" id="accuracyLine"></p>
+      <div class="legend">
+        <span><i class="swatch" style="background:#DDEBD9;border:1px solid #3B6B45;"></i>corregido bien</span>
+        <span><i class="swatch" style="background:#F4DCDC;border:1px solid #7C2530;"></i>error sin corregir</span>
+        <span><i class="swatch" style="background:#FBE8C6;border:1px solid #8A5A16;"></i>palabra que estaba bien y quedó mal</span>
+        <span><i class="swatch" style="background:#9C7A32;"></i>forma correcta sugerida</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel lateral: estadísticas en vivo mientras se corrige -->
+  <aside class="live-panel" id="livePanel">
+    <h2>En vivo</h2>
+
+    <div class="live-clock">
+      <span id="liveTime">05:00</span>
+      <div class="progress-track"><div class="progress-fill" id="timeFill"></div></div>
+    </div>
+
+    <div class="live-stat">
+      <span class="live-label">Errores en el texto</span>
+      <span class="live-value" id="liveTotalErrors">–</span>
+    </div>
+    <div class="live-stat">
+      <span class="live-label">Corregidos hasta ahora</span>
+      <span class="live-value ok" id="liveFixed">0</span>
+    </div>
+    <div class="live-stat">
+      <span class="live-label">Pendientes</span>
+      <span class="live-value pending" id="livePending">–</span>
+    </div>
+    <div class="live-stat">
+      <span class="live-label">Palabras que quedaron mal</span>
+      <span class="live-value warn" id="liveBroken">0</span>
+    </div>
+
+    <div class="live-progress">
+      <span class="live-label">Progreso de corrección</span>
+      <div class="progress-track"><div class="progress-fill correct" id="progressFill"></div></div>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+
+    <p class="live-note" id="liveNote">Tocá «Comenzar corrección» para arrancar el cronómetro.</p>
+  </aside>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

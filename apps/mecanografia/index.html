@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de Mecanografía — Práctica</title>
+<style>
+  :root{
+    --navy:#16233F;
+    --navy-dark:#0E1830;
+    --paper:#FAF7F0;
+    --paper-line:#E7E1D2;
+    --ink:#232323;
+    --ink-soft:#5B5849;
+    --gold:#B78D3F;
+    --gold-dark:#8E6A28;
+    --ok:#2F6F4E;
+    --err:#B33A3A;
+    --err-bg:#F6DEDE;
+    --ok-bg:#E1EFE7;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height:100vh;
+  }
+  .topbar{
+    background:linear-gradient(180deg,var(--navy) 0%, var(--navy-dark) 100%);
+    color:#EFE9DA;
+    padding:22px 28px 26px;
+    border-bottom:4px solid var(--gold);
+  }
+  .topbar-inner{
+    max-width:920px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .seal{
+    width:44px;height:44px;flex-shrink:0;
+  }
+  .topbar h1{
+    font-size:1.28rem;
+    margin:0;
+    font-weight:600;
+    letter-spacing:.2px;
+  }
+  .topbar p{
+    margin:2px 0 0;
+    font-size:.85rem;
+    color:#B9AF95;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:26px 20px 60px;
+  }
+
+  .panel{
+    background:#fff;
+    border:1px solid var(--paper-line);
+    border-radius:3px;
+    box-shadow:0 1px 3px rgba(20,20,10,.06);
+  }
+
+  /* ---- setup screen ---- */
+  #setup{padding:30px 32px;}
+  #setup h2{margin:0 0 6px;font-size:1.1rem;color:var(--navy);}
+  #setup .desc{color:var(--ink-soft);font-size:.92rem;line-height:1.5;margin:0 0 22px;max-width:60ch;}
+  .field-row{
+    display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; margin-bottom:22px;
+  }
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:.78rem;text-transform:none;color:var(--ink-soft);}
+  .field input[type=number]{
+    width:110px;padding:9px 10px;border:1px solid #cfc9b8;border-radius:2px;font-size:1rem;
+    font-family:inherit;
+  }
+  .btn{
+    border:none;border-radius:2px;padding:11px 20px;font-size:.92rem;font-weight:600;
+    cursor:pointer;font-family:inherit;transition:background .15s ease;
+  }
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-primary:hover{background:var(--navy-dark);}
+  .btn-secondary{background:transparent;color:var(--navy);border:1px solid var(--navy);}
+  .btn-secondary:hover{background:#eef0f4;}
+  .btn-gold{background:var(--gold);color:#2b2004;}
+  .btn-gold:hover{background:var(--gold-dark);color:#fff;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  .id-display{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:.85rem;color:var(--ink-soft);margin-top:2px;
+  }
+  .id-display b{color:var(--navy);}
+
+  /* ---- test screen ---- */
+  #test{display:none;padding:0;}
+  .test-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 26px;border-bottom:1px solid var(--paper-line);
+    background:#FCFAF4;
+  }
+  .test-meta{font-size:.8rem;color:var(--ink-soft);}
+  .test-meta b{color:var(--navy);}
+  .timer{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-variant-numeric: tabular-nums;
+    font-size:1.9rem;font-weight:700;color:var(--navy);letter-spacing:1px;
+  }
+  .timer.warn{color:var(--err);}
+
+  .stats-strip{
+    display:flex;gap:0;border-bottom:1px solid var(--paper-line);
+  }
+  .stat{
+    flex:1;text-align:center;padding:10px 4px;border-right:1px solid var(--paper-line);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .n{font-size:1.15rem;font-weight:700;color:var(--navy);font-family:Georgia,serif;}
+  .stat .l{font-size:.68rem;color:var(--ink-soft);margin-top:1px;}
+
+  .words-gauge{
+    padding:12px 26px 16px;border-bottom:1px solid var(--paper-line);background:#FCFAF4;
+  }
+  .wg-top{
+    display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;
+    font-size:.8rem;color:var(--ink-soft);
+  }
+  .wg-top .wg-label{font-weight:600;color:var(--navy);text-transform:uppercase;font-size:.7rem;letter-spacing:.03em;}
+  .wg-top .wg-value{font-family:Georgia,serif;font-size:.95rem;color:var(--ink);}
+  .wg-top .wg-value b{font-size:1.15rem;color:var(--navy);}
+  .wg-top .wg-min{color:var(--ink-soft);font-size:.75rem;}
+  .wg-bar-wrap{
+    position:relative;height:10px;background:#E7E1D2;border:1px solid var(--paper-line);border-radius:1px;
+  }
+  .wg-bar-fill{
+    position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--gold);
+    transition:width .25s ease, background-color .25s ease;
+  }
+  .wg-bar-fill.reached{background:var(--ok);}
+  .wg-bar-marker{
+    position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--navy);
+  }
+  .wg-bar-marker::after{
+    content:'100';position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+    font-size:.62rem;color:var(--navy);font-weight:600;
+  }
+
+  .text-area-wrap{padding:22px 30px 8px;}
+  #passage{
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:1.18rem;
+    line-height:1.9;
+    max-width:74ch;
+    margin:0 auto;
+    white-space:pre-wrap;
+    color:#8a8578;
+    max-height:168px;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+    padding:4px 6px;
+    border:1px solid var(--paper-line);
+    border-radius:2px;
+    background:#FEFDFA;
+  }
+  #passage span.correct{color:var(--ink);background:var(--ok-bg);}
+  #passage span.incorrect{color:var(--err);background:var(--err-bg);text-decoration:underline;}
+  #passage span.current{background:var(--gold);color:#2b2004;border-radius:1px;}
+  #passage span.pending{color:#8a8578;}
+
+  .typebox-wrap{padding:6px 30px 26px;}
+  #typebox{
+    width:100%;
+    max-width:74ch;
+    margin:14px auto 0;
+    display:block;
+    min-height:80px;
+    resize:none;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:1.05rem;
+    padding:12px 14px;
+    border:1px solid #cfc9b8;
+    border-radius:2px;
+    line-height:1.6;
+    background:#FEFDFA;
+  }
+  #typebox:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  .hint{
+    max-width:74ch;margin:8px auto 0;font-size:.8rem;color:var(--ink-soft);text-align:center;
+  }
+
+  .test-actions{
+    display:flex;justify-content:center;gap:12px;padding:0 30px 28px;
+  }
+
+  /* ---- results ---- */
+  #results{display:none;padding:34px 36px;}
+  #results h2{margin:0 0 4px;color:var(--navy);font-size:1.25rem;}
+  #results .sub{color:var(--ink-soft);font-size:.88rem;margin:0 0 26px;}
+  .result-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:14px;margin-bottom:26px;
+  }
+  .rcard{
+    border:1px solid var(--paper-line);border-radius:3px;padding:16px 14px;text-align:center;
+    background:#FCFAF4;
+  }
+  .rcard .big{font-family:Georgia,serif;font-size:1.9rem;font-weight:700;color:var(--navy);}
+  .rcard .lbl{font-size:.75rem;color:var(--ink-soft);margin-top:4px;}
+  .rcard.accent .big{color:var(--gold-dark);}
+
+  .note{
+    font-size:.8rem;color:var(--ink-soft);border-left:3px solid var(--gold);
+    padding:10px 14px;background:#FCFAF4;margin-bottom:26px;line-height:1.5;
+  }
+  .result-actions{display:flex;gap:12px;flex-wrap:wrap;}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:.75rem;padding:24px 0 10px;
+  }
+
+  @media (max-width:560px){
+    #passage{font-size:1.05rem;}
+    .stats-strip{flex-wrap:wrap;}
+    .stat{flex:1 1 33%;border-bottom:1px solid var(--paper-line);}
+  }
+</style>
+<link rel="manifest" href="../../manifest.webmanifest">
+<meta name="theme-color" content="#16233F">
+</head>
+<body>
+<a href="../../index.html" style="position:fixed;bottom:16px;right:16px;z-index:999;background:#16233F;border:1px solid #B78D3F;color:#EFE9DA;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:.76rem;font-weight:600;text-decoration:none;padding:7px 13px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.25);">← Judweb</a>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <svg class="seal" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="22" stroke="#B78D3F" stroke-width="2"/>
+      <path d="M24 10 L24 30 M15 16 L24 10 L33 16 M12 16 L18 16 M18 16 L15 22 L21 22 L18 16 M36 16 L30 16 M30 16 L27 22 L33 22 L30 16 M24 30 L24 34 M17 38 L31 38" stroke="#B78D3F" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>Prueba de Mecanografía — Práctica</h1>
+      <p>Formato de evaluación tipo concurso — cronómetro de 4 minutos</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="panel" id="setup">
+    <h2>Preparar la prueba</h2>
+    <p class="desc">Elegí un número de texto del 1 al 1000, o dejá que la app te asigne uno al azar. Cada número siempre corresponde al mismo texto, así podés repetirlo para medir tu progreso.</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="textId">Número de texto (1–1000)</label>
+        <input type="number" id="textId" min="1" max="1000" value="1">
+      </div>
+      <button class="btn btn-secondary" id="randomBtn" type="button">Al azar</button>
+      <button class="btn btn-gold" id="previewBtn" type="button">Ver texto</button>
+    </div>
+
+    <div class="field-row" style="margin-bottom:8px;">
+      <div class="field" style="min-width:150px;">
+        <label for="durMin">Duración (minutos)</label>
+        <input type="number" id="durMin" min="1" max="15" value="4">
+      </div>
+    </div>
+
+    <p class="id-display">Texto seleccionado: <b id="idLabel">Nº 1</b> · <span id="lenLabel"></span></p>
+
+    <div id="previewBox" style="margin-top:18px;display:none;">
+      <div class="text-area-wrap" style="padding:0;">
+        <div id="passagePreview" style="font-family:Georgia,serif;font-size:1rem;line-height:1.7;color:#5B5849;max-height:160px;overflow:auto;border:1px solid var(--paper-line);padding:14px 16px;border-radius:2px;background:#FCFAF4;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <button class="btn btn-primary" id="startBtn" type="button">Comenzar prueba</button>
+    </div>
+  </div>
+
+  <div class="panel" id="test">
+    <div class="test-head">
+      <div class="test-meta">Texto <b id="testIdLabel"></b></div>
+      <div class="timer" id="timer">04:00</div>
+      <div class="test-meta"><button class="btn btn-secondary" id="cancelBtn" type="button" style="padding:6px 14px;font-size:.8rem;">Cancelar</button></div>
+    </div>
+    <div class="stats-strip">
+      <div class="stat"><div class="n" id="liveWpm">0</div><div class="l">PPM (palabras)</div></div>
+      <div class="stat"><div class="n" id="livePnpm">0</div><div class="l">Pulsaciones netas/min</div></div>
+      <div class="stat"><div class="n" id="liveAcc">100%</div><div class="l">Precisión</div></div>
+      <div class="stat"><div class="n" id="liveErr">0</div><div class="l">Errores</div></div>
+    </div>
+    <div class="words-gauge">
+      <div class="wg-top">
+        <span class="wg-label">Palabras correctas</span>
+        <span class="wg-value"><b id="liveWords">0</b> / 150 <span class="wg-min">(mínimo exigido: 100)</span></span>
+      </div>
+      <div class="wg-bar-wrap">
+        <div class="wg-bar-fill" id="wgFill"></div>
+        <div class="wg-bar-marker" style="left:66.6667%"></div>
+      </div>
+    </div>
+    <div class="text-area-wrap">
+      <div id="passage"></div>
+    </div>
+    <div class="typebox-wrap">
+      <textarea id="typebox" placeholder="Hacé clic acá y empezá a escribir. El cronómetro arranca con la primera tecla." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+      <p class="hint">El cronómetro se inicia al presionar la primera tecla. La prueba finaliza automáticamente al llegar a cero o al terminar el texto.</p>
+    </div>
+    <div class="test-actions">
+      <button class="btn btn-secondary" id="finishBtn" type="button">Finalizar ahora</button>
+    </div>
+  </div>
+
+  <div class="panel" id="results">
+    <h2>Resultado de la prueba</h2>
+    <p class="sub">Texto <span id="resIdLabel"></span> · <span id="resTimeLabel"></span></p>
+
+    <div class="result-grid">
+      <div class="rcard accent"><div class="big" id="resWordsCorrect">0</div><div class="lbl">Palabras correctas (mín. 100)</div></div>
+      <div class="rcard accent"><div class="big" id="resWpm">0</div><div class="lbl">Palabras por minuto</div></div>
+      <div class="rcard accent"><div class="big" id="resPnpm">0</div><div class="lbl">Pulsaciones netas / min</div></div>
+      <div class="rcard"><div class="big" id="resPpm">0</div><div class="lbl">Pulsaciones brutas / min</div></div>
+      <div class="rcard"><div class="big" id="resAcc">0%</div><div class="lbl">Precisión</div></div>
+      <div class="rcard"><div class="big" id="resErr">0</div><div class="lbl">Errores</div></div>
+      <div class="rcard"><div class="big" id="resChars">0</div><div class="lbl">Caracteres escritos</div></div>
+    </div>
+
+    <div class="note" id="wordsNote">
+      Referencia orientativa: en concursos administrativos suele solicitarse un mínimo aproximado de 200–250 pulsaciones netas por minuto con muy baja tasa de error. Estos valores varían según el organismo y la convocatoria; usá esta prueba solo como entrenamiento.
+    </div>
+
+    <div class="result-actions">
+      <button class="btn btn-primary" id="retryBtn" type="button">Repetir este texto</button>
+      <button class="btn btn-gold" id="nextBtn" type="button">Probar otro texto</button>
+      <button class="btn btn-secondary" id="backBtn" type="button">Volver al inicio</button>
+    </div>
+  </div>
+
+  <footer>Herramienta de práctica no oficial, inspirada en el formato de pruebas de mecanografía de organismos judiciales y administrativos.</footer>
+</div>
+
+<script>
+/* =========================================================
+   BANCO DE CONTENIDO
+   4 categorías temáticas x (intro / cuerpo / cierre)
+   Combinadas de forma determinística según el Nº de texto
+   (1 a 1000) para generar 1000 textos distintos y
+   reproducibles.
+   ========================================================= */
+
+const BANKS = [
+  { // Único banco: Institucional / judicial-administrativo (Poder Judicial de San Juan)
+    intro: [
+      "El expediente ingresado a la mesa de entradas debe ser registrado con fecha, hora y número de orden antes de ser girado a la dependencia correspondiente.",
+      "Toda presentación ante el tribunal deberá efectuarse por escrito, con firma del letrado patrocinante y copia para traslado a la contraparte.",
+      "La Oficina de Gestión Judicial es responsable de coordinar la agenda de audiencias y de notificar a las partes con la antelación que exige la normativa vigente.",
+      "El Poder Judicial de San Juan garantiza a la ciudadanía el acceso a la justicia mediante procedimientos ágiles, transparentes y respetuosos de las garantías constitucionales.",
+      "La Corte de Justicia de la Provincia ejerce la superintendencia sobre los tribunales inferiores y dicta las acordadas necesarias para el buen funcionamiento del servicio de justicia.",
+      "El sistema informático de gestión de causas permite consultar el estado procesal de un expediente sin necesidad de trasladarse hasta la sede del juzgado.",
+      "La atención al público en las mesas de entradas se organiza mediante un sistema de turnos que agiliza los trámites y reduce los tiempos de espera.",
+      "Toda persona tiene derecho a ser oída por un juez competente, imparcial e independiente, dentro de un plazo razonable y con las debidas garantías.",
+      "El proceso judicial se rige por los principios de legalidad, contradicción, igualdad de las partes y publicidad de los actos procesales.",
+      "La capacitación permanente de magistrados, funcionarios y empleados judiciales resulta esencial para sostener la calidad y la celeridad del servicio de justicia."
+    ],
+    body: [
+      "El secretario dejará constancia en el acta de la hora exacta de inicio y finalización de la audiencia, así como de los incidentes que pudieran suscitarse.",
+      "Las partes podrán ofrecer prueba documental, testimonial y pericial dentro del plazo perentorio que fije el juzgado interviniente.",
+      "Corresponde al organismo administrativo resguardar la confidencialidad de los datos personales contenidos en los legajos y expedientes bajo su custodia.",
+      "El recurso de apelación deberá interponerse y fundarse dentro de los cinco días hábiles siguientes a la notificación de la resolución impugnada.",
+      "Se dispone la remisión de las actuaciones a la Cámara, previa certificación de la Secretaría sobre el cumplimiento de los plazos procesales.",
+      "El personal administrativo verificará que cada foja del expediente esté debidamente numerada y rubricada antes de su archivo definitivo.",
+      "La mediación previa obligatoria tiene por finalidad procurar un acuerdo entre las partes antes de habilitar la instancia judicial correspondiente.",
+      "Los oficios librados a organismos públicos deberán diligenciarse a través del sistema de gestión electrónica habilitado a tal efecto.",
+      "El tribunal podrá disponer medidas para mejor proveer cuando lo considere necesario para esclarecer los hechos controvertidos en la causa.",
+      "La feria judicial no suspende los plazos en las causas declaradas de trámite urgente por resolución fundada del magistrado.",
+      "El área de recursos humanos deberá elevar mensualmente el parte de asistencia del personal a la Superintendencia General.",
+      "La notificación por cédula se considerará válidamente cumplida una vez que el oficial notificador certifique la diligencia practicada.",
+      "Corresponde al juzgado fijar día y hora de audiencia dentro de los diez días posteriores a la traba de la litis.",
+      "El escrito de demanda deberá contener el nombre completo de las partes, los hechos, el derecho invocado y la petición concreta.",
+      "La Corte de Justicia dispuso la implementación de un nuevo sistema de turnos para la atención al público en las mesas de entradas.",
+      "El defensor oficial asumirá la representación del imputado cuando este no cuente con letrado particular designado.",
+      "Las resoluciones interlocutorias son susceptibles de recurso de reposición dentro del plazo que establece el código de procedimientos.",
+      "El archivo general del Poder Judicial conserva las causas concluidas por el plazo que fija la reglamentación específica.",
+      "El fiscal de instrucción dispondrá la realización de las medidas probatorias que resulten conducentes para el esclarecimiento del hecho denunciado.",
+      "La cámara de apelaciones resolverá el recurso dentro del plazo legal, previa vista al ministerio público cuando la naturaleza de la causa así lo requiera.",
+      "El juzgado de familia citará a las partes a una audiencia de conciliación antes de resolver sobre el régimen de comunicación y la cuota alimentaria.",
+      "La oficina de violencia doméstica recibirá la denuncia y dará intervención inmediata al juzgado de turno para el dictado de medidas urgentes.",
+      "El perito designado deberá presentar su informe dentro del plazo fijado, bajo apercibimiento de ser removido y sustituido por otro profesional.",
+      "La declaración testimonial se recibirá bajo juramento de decir verdad, dejándose constancia de las generales de ley del testigo compareciente.",
+      "El embargo preventivo trabado sobre bienes del demandado deberá inscribirse en el registro correspondiente para que resulte oponible a terceros.",
+      "El tribunal oral en lo criminal fijará la fecha de inicio del debate una vez elevada la causa a juicio por el juez de garantías.",
+      "La secretaría penal certificará el cómputo de la pena impuesta, informando la fecha de vencimiento a la unidad penitenciaria correspondiente.",
+      "El colegio de abogados llevará el registro de matrícula de los profesionales habilitados para actuar ante los tribunales de la provincia.",
+      "La defensoría de pobres y ausentes intervendrá cuando la parte no cuente con recursos suficientes para afrontar el patrocinio letrado particular.",
+      "El escribano actuante certificará la firma de las partes en el instrumento público, dejando constancia de la fecha y el lugar de otorgamiento.",
+      "La junta electoral provincial fiscalizará el desarrollo del proceso comicial y resolverá las impugnaciones que se presenten en tiempo y forma.",
+      "El consejo de la magistratura evaluará los antecedentes de los postulantes a cargos judiciales mediante un concurso público de oposición y antecedentes.",
+      "La oficina de mandamientos y notificaciones diligenciará las cédulas y oficios librados por los distintos juzgados dentro del plazo reglamentario.",
+      "El registro civil expedirá las partidas solicitadas una vez verificada la identidad del peticionante y el pago de la tasa correspondiente.",
+      "La dirección de rentas notificará la deuda tributaria determinada al contribuyente, otorgándole el plazo legal para formular su descargo.",
+      "El juzgado laboral procurará avenir a las partes en la audiencia de conciliación antes de continuar con la etapa de producción de prueba.",
+      "La sala civil y comercial resolverá el conflicto de competencia planteado, remitiendo las actuaciones al juzgado que resulte finalmente competente.",
+      "El personal del juzgado digitalizará los expedientes archivados a fin de facilitar su consulta y preservar la integridad de la documentación original.",
+      "La resolución interlocutoria quedará notificada por ministerio de la ley una vez transcurrido el plazo previsto por el código procesal.",
+      "El juzgado de paz atenderá los reclamos vecinales y las causas de menor cuantía que la ley pone bajo su competencia territorial.",
+      "El código procesal establece los plazos perentorios dentro de los cuales las partes deberán contestar la demanda bajo apercibimiento de rebeldía.",
+      "El colegio de abogados de San Juan organiza capacitaciones periódicas sobre oralidad, litigación y las últimas reformas del código procesal.",
+      "La secretaría penal recibirá la denuncia formulada por la víctima, dando inmediata intervención al fiscal de turno para el inicio de la investigación.",
+      "El consejo asesor de la magistratura emitirá dictamen no vinculante sobre la idoneidad de los candidatos propuestos para cubrir la vacante.",
+      "La cámara de comercio articula con el Poder Judicial mecanismos de resolución alternativa de conflictos para agilizar la solución de controversias mercantiles.",
+      "El defensor del pueblo recibirá las quejas de los vecinos vinculadas a la prestación de servicios públicos y dará traslado al organismo pertinente.",
+      "La comisaría del barrio remitirá las actuaciones labradas al juzgado de instrucción dentro de las veinticuatro horas de producido el hecho.",
+      "El fiscal de estado tomará intervención en la causa cuando se encuentre comprometido el patrimonio o el interés del Estado provincial.",
+      "El juzgado de ejecución controlará el cumplimiento de la pena y resolverá sobre los pedidos de libertad condicional que se formulen.",
+      "La oficina de estadística judicial procesará mensualmente los datos de ingreso, trámite y resolución de causas en cada fuero.",
+      "El archivo general resguarda los expedientes concluidos por el plazo que establece la reglamentación, garantizando su conservación y disponibilidad.",
+      "La sala penal confirmará o revocará la prisión preventiva dictada en primera instancia, previo dictamen del fiscal ante la cámara.",
+      "El curso de capacitación en oralidad y litigación se dicta de manera periódica para funcionarios, empleados y letrados matriculados.",
+      "La reforma procesal introdujo la audiencia oral como instancia central del proceso, reduciendo el trámite escrito en numerosas etapas.",
+      "El tribunal de familia dispondrá las medidas cautelares necesarias para resguardar el interés superior del niño, niña o adolescente involucrado.",
+      "La cámara de apelaciones en lo civil resolverá sobre la procedencia del recurso extraordinario local interpuesto contra la sentencia definitiva.",
+      "El juzgado correccional tramitará las causas por delitos de menor gravedad conforme al procedimiento abreviado que autoriza el código.",
+      "La oficina judicial de gestión de audiencias coordinará la agenda de las salas y evitará la superposición de diligencias entre distintos fueros.",
+      "El ministerio público fiscal deberá formular la acusación dentro del plazo legal, una vez concluida la etapa de investigación penal preparatoria."
+    ],
+    cierre: [
+      "Cúmplase, regístrese y notifíquese a las partes por los medios que correspondan según la normativa aplicable.",
+      "Firme la presente resolución, procédase a su ejecución conforme a derecho y archívense las actuaciones.",
+      "Elévense las actuaciones a la instancia superior a los efectos de su tratamiento y resolución definitiva.",
+      "Notifíquese la presente providencia a las partes y al Ministerio Público Fiscal por los medios que correspondan.",
+      "Agréguese la documentación acompañada, téngase presente lo manifestado y prosígase el trámite según su estado.",
+      "Regístrese en el libro correspondiente, líbrense los oficios pertinentes y déjese debida constancia en el expediente.",
+      "Pase a despacho para el dictado de la resolución que por derecho corresponda conforme a las constancias de autos.",
+      "Hágase saber a las partes lo aquí resuelto y estese a lo que en definitiva se decida en la instancia superior.",
+      "Cúmplase con lo ordenado, glósense las actuaciones producidas y continúese el procedimiento según su estado procesal.",
+      "Tómese razón de lo actuado, comuníquese a los organismos pertinentes y resérvese el expediente en secretaría."
+    ]
+  }
+];
+
+// PRNG determinístico (mulberry32) para que cada Nº de texto siempre genere el mismo contenido
+function mulberry32(seed){
+  return function(){
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function pickWithoutRepeat(arr, count, rng){
+  const pool = arr.map((v,i)=>i);
+  const chosen = [];
+  for(let i=0;i<count && pool.length>0;i++){
+    const idx = Math.floor(rng()*pool.length);
+    chosen.push(pool[idx]);
+    pool.splice(idx,1);
+  }
+  return chosen.map(i=>arr[i]);
+}
+
+const WORDS_PER_TEXT = 200; // cada uno de los 1000 textos tiene exactamente esta cantidad de palabras
+
+function generateText(id){
+  // id: 1..1000
+  const rng = mulberry32(id*2654435761);
+  const catIndex = (id-1) % BANKS.length;
+  const cat = BANKS[catIndex];
+
+  const introIdx = Math.floor(rng()*cat.intro.length);
+  const cierreIdx = Math.floor(rng()*cat.cierre.length);
+  const cierreWords = cat.cierre[cierreIdx].trim().split(/\s+/);
+
+  // Se arma un pool de oraciones de "cuerpo" en orden aleatorio (determinístico
+  // según el id) y se van agregando palabras hasta tener margen suficiente
+  // para poder cerrar con la oración de cierre y llegar a WORDS_PER_TEXT.
+  const bodyPool = pickWithoutRepeat(cat.body, cat.body.length, rng);
+  let words = cat.intro[introIdx].trim().split(/\s+/);
+  let poolIdx = 0;
+  let guard = 0;
+  while (words.length + cierreWords.length < WORDS_PER_TEXT && guard < 60) {
+    const sentence = bodyPool[poolIdx % bodyPool.length];
+    words = words.concat(sentence.trim().split(/\s+/));
+    poolIdx++;
+    guard++;
+  }
+  words = words.concat(cierreWords);
+
+  // En el caso raro de que aún falten palabras, se repiten oraciones de cuerpo.
+  guard = 0;
+  while (words.length < WORDS_PER_TEXT && guard < 60) {
+    const sentence = bodyPool[poolIdx % bodyPool.length];
+    words = words.concat(sentence.trim().split(/\s+/));
+    poolIdx++;
+    guard++;
+  }
+
+  return words.slice(0, WORDS_PER_TEXT).join(' ');
+}
+
+/* =========================================================
+   ESTADO Y LÓGICA DE LA APLICACIÓN
+   ========================================================= */
+
+let currentText = "";
+let currentId = 1;
+let durationSec = 240;
+let timeLeft = 240;
+let timerInterval = null;
+let started = false;
+let finished = false;
+let typedChars = 0; // pulsaciones del texto EN CURSO (se reinicia al pasar al siguiente texto)
+let errorCount = 0; // errores del texto EN CURSO
+
+// Acumulado de toda la sesión (suma de todos los textos ya completados o cortados)
+let cumulativeTypedChars = 0;
+let cumulativeErrors = 0;
+let sessionCorrectWords = 0; // palabras correctas totales de la sesión (objetivo: 100, tope de control: 150)
+let completedPassages = 0;
+
+const WORDS_MIN = 100;
+const WORDS_MAX_GAUGE = 150; // tope visual del medidor
+
+// Cuenta cuántas palabras del texto de referencia ya están COMPLETAS (el
+// usuario ya pasó ese límite de palabra) y fueron tipeadas exactamente
+// igual, usando las posiciones reales de las palabras en el texto de
+// referencia (no depende de que el usuario haya puesto los espacios en el
+// mismo lugar, así que no se desalinea si hay un error puntual).
+function countCorrectWordsSoFar(value, target){
+  let count = 0;
+  let pos = 0;
+  const len = target.length;
+  while(pos < len){
+    const spaceIdx = target.indexOf(' ', pos);
+    const wordEnd = spaceIdx === -1 ? len : spaceIdx;
+    const isLastWord = spaceIdx === -1;
+    const wordFullyPassed = isLastWord ? value.length >= wordEnd : value.length > wordEnd;
+    if(!wordFullyPassed) break;
+    if(value.slice(pos, wordEnd) === target.slice(pos, wordEnd)) count++;
+    pos = wordEnd + 1;
+  }
+  return count;
+}
+
+function currentLiveWords(){
+  return sessionCorrectWords + countCorrectWordsSoFar(els.typebox.value, currentText);
+}
+
+function updateWordsGauge(){
+  const total = currentLiveWords();
+  const pct = Math.min(100, (total / WORDS_MAX_GAUGE) * 100);
+  els.liveWords.textContent = total;
+  els.wgFill.style.width = pct + '%';
+  els.wgFill.classList.toggle('reached', total >= WORDS_MIN);
+}
+
+const els = {
+  textIdInput: document.getElementById('textId'),
+  durMin: document.getElementById('durMin'),
+  randomBtn: document.getElementById('randomBtn'),
+  previewBtn: document.getElementById('previewBtn'),
+  idLabel: document.getElementById('idLabel'),
+  lenLabel: document.getElementById('lenLabel'),
+  previewBox: document.getElementById('previewBox'),
+  passagePreview: document.getElementById('passagePreview'),
+  startBtn: document.getElementById('startBtn'),
+
+  setup: document.getElementById('setup'),
+  test: document.getElementById('test'),
+  results: document.getElementById('results'),
+
+  testIdLabel: document.getElementById('testIdLabel'),
+  timer: document.getElementById('timer'),
+  passage: document.getElementById('passage'),
+  typebox: document.getElementById('typebox'),
+  cancelBtn: document.getElementById('cancelBtn'),
+  finishBtn: document.getElementById('finishBtn'),
+
+  liveWpm: document.getElementById('liveWpm'),
+  livePnpm: document.getElementById('livePnpm'),
+  liveAcc: document.getElementById('liveAcc'),
+  liveErr: document.getElementById('liveErr'),
+  liveWords: document.getElementById('liveWords'),
+  wgFill: document.getElementById('wgFill'),
+
+  resIdLabel: document.getElementById('resIdLabel'),
+  resTimeLabel: document.getElementById('resTimeLabel'),
+  resWpm: document.getElementById('resWpm'),
+  resPnpm: document.getElementById('resPnpm'),
+  resPpm: document.getElementById('resPpm'),
+  resAcc: document.getElementById('resAcc'),
+  resErr: document.getElementById('resErr'),
+  resChars: document.getElementById('resChars'),
+  resWordsCorrect: document.getElementById('resWordsCorrect'),
+  wordsNote: document.getElementById('wordsNote'),
+
+  retryBtn: document.getElementById('retryBtn'),
+  nextBtn: document.getElementById('nextBtn'),
+  backBtn: document.getElementById('backBtn'),
+};
+
+function clampId(v){
+  v = parseInt(v,10);
+  if(isNaN(v)) v = 1;
+  return Math.min(1000, Math.max(1, v));
+}
+
+function refreshSetupLabels(){
+  currentId = clampId(els.textIdInput.value);
+  els.textIdInput.value = currentId;
+  const text = generateText(currentId);
+  els.idLabel.textContent = 'Nº ' + currentId;
+  els.lenLabel.textContent = text.length + ' caracteres aprox.';
+}
+
+els.textIdInput.addEventListener('input', refreshSetupLabels);
+
+els.randomBtn.addEventListener('click', ()=>{
+  els.textIdInput.value = 1 + Math.floor(Math.random()*1000);
+  refreshSetupLabels();
+  if(els.previewBox.style.display !== 'none'){
+    els.passagePreview.textContent = generateText(currentId);
+  }
+});
+
+els.previewBtn.addEventListener('click', ()=>{
+  refreshSetupLabels();
+  els.passagePreview.textContent = generateText(currentId);
+  els.previewBox.style.display = 'block';
+});
+
+refreshSetupLabels();
+
+function buildPassageDOM(text){
+  els.passage.innerHTML = '';
+  els.passage.scrollTop = 0;
+  const frag = document.createDocumentFragment();
+  for(let i=0;i<text.length;i++){
+    const span = document.createElement('span');
+    span.textContent = text[i];
+    span.className = 'pending';
+    span.dataset.idx = i;
+    frag.appendChild(span);
+  }
+  els.passage.appendChild(frag);
+}
+
+function startSetup(){
+  currentId = clampId(els.textIdInput.value);
+  currentText = generateText(currentId);
+  durationSec = Math.max(60, Math.min(900, (parseInt(els.durMin.value,10)||4)*60));
+  timeLeft = durationSec;
+  started = false;
+  finished = false;
+  typedChars = 0;
+  errorCount = 0;
+
+  els.testIdLabel.textContent = 'Nº ' + currentId;
+  buildPassageDOM(currentText);
+  updateTimerDisplay();
+  els.typebox.value = '';
+  els.typebox.disabled = false;
+  cumulativeTypedChars = 0;
+  cumulativeErrors = 0;
+  sessionCorrectWords = 0;
+  completedPassages = 0;
+  resetLiveStats();
+
+  els.setup.style.display = 'none';
+  els.results.style.display = 'none';
+  els.test.style.display = 'block';
+  setTimeout(()=>els.typebox.focus(), 50);
+}
+
+function resetLiveStats(){
+  els.liveWpm.textContent = '0';
+  els.livePnpm.textContent = '0';
+  els.liveAcc.textContent = '100%';
+  els.liveErr.textContent = '0';
+  els.timer.classList.remove('warn');
+  updateWordsGauge();
+}
+
+function updateTimerDisplay(){
+  const m = Math.floor(timeLeft/60).toString().padStart(2,'0');
+  const s = Math.floor(timeLeft%60).toString().padStart(2,'0');
+  els.timer.textContent = m+':'+s;
+  els.timer.classList.toggle('warn', timeLeft<=30);
+}
+
+function tick(){
+  timeLeft--;
+  updateTimerDisplay();
+  if(timeLeft<=0){
+    endTest();
+  }
+}
+
+function beginTimerIfNeeded(){
+  if(!started){
+    started = true;
+    timerInterval = setInterval(tick, 1000);
+  }
+}
+
+function renderProgress(value){
+  const spans = els.passage.children;
+  let correctCount = 0;
+  let errors = 0;
+  const len = Math.min(value.length, spans.length);
+
+  for(let i=0;i<spans.length;i++){
+    spans[i].className = 'pending';
+  }
+  for(let i=0;i<len;i++){
+    const ok = value[i] === currentText[i];
+    spans[i].className = ok ? 'correct' : 'incorrect';
+    if(ok) correctCount++; else errors++;
+  }
+  if(value.length < currentText.length){
+    spans[value.length].classList.add('current');
+    scrollPassageToCurrent(spans[value.length]);
+  }
+
+  errorCount = errors;
+  typedChars = value.length;
+
+  updateLiveStats();
+
+  if(value.length >= currentText.length){
+    passageComplete(value);
+  }
+}
+
+function passageComplete(value){
+  // Se computan y acumulan las palabras correctas, caracteres y errores
+  // de este texto antes de pasar al siguiente (o de terminar la prueba).
+  sessionCorrectWords += countCorrectWordsSoFar(value, currentText);
+  cumulativeTypedChars += typedChars;
+  cumulativeErrors += errorCount;
+  completedPassages++;
+  typedChars = 0;
+  errorCount = 0;
+  updateWordsGauge();
+
+  if(timeLeft <= 0){
+    endTest();
+    return;
+  }
+  loadNextPassage();
+}
+
+function loadNextPassage(){
+  currentId = (currentId % 1000) + 1; // encadena el siguiente texto del banco (envuelve 1000 -> 1)
+  currentText = generateText(currentId);
+  els.testIdLabel.textContent = 'Nº ' + currentId;
+  buildPassageDOM(currentText);
+  els.typebox.value = '';
+  updateLiveStats();
+  setTimeout(()=>els.typebox.focus(), 30);
+}
+
+function scrollPassageToCurrent(currentSpan){
+  const container = els.passage;
+  const contRect = container.getBoundingClientRect();
+  const spanRect = currentSpan.getBoundingClientRect();
+  const relativeTop = (spanRect.top - contRect.top) + container.scrollTop;
+  const desiredTop = relativeTop - (container.clientHeight * 0.35);
+  container.scrollTop = Math.max(0, desiredTop);
+}
+
+function elapsedMinutes(){
+  const elapsedSec = started ? (durationSec - timeLeft) : 0;
+  return Math.max(elapsedSec, 1) / 60;
+}
+
+function updateLiveStats(){
+  const mins = elapsedMinutes();
+  const totalChars = cumulativeTypedChars + typedChars;
+  const totalErrors = cumulativeErrors + errorCount;
+  const correct = totalChars - totalErrors;
+  const words = totalChars/5;
+  const wpm = Math.round(words/mins);
+  const pnpm = Math.round(Math.max(0, correct)/mins);
+  const acc = totalChars>0 ? Math.round((correct/totalChars)*100) : 100;
+
+  els.liveWpm.textContent = isFinite(wpm)?wpm:0;
+  els.livePnpm.textContent = isFinite(pnpm)?pnpm:0;
+  els.liveAcc.textContent = acc+'%';
+  els.liveErr.textContent = totalErrors;
+  updateWordsGauge();
+}
+
+els.typebox.addEventListener('input', (e)=>{
+  if(finished) return;
+  beginTimerIfNeeded();
+  renderProgress(e.target.value);
+});
+
+els.typebox.addEventListener('paste', (e)=>{
+  e.preventDefault(); // evitar pegar el texto para mantener la validez de la práctica
+});
+
+function endTest(){
+  if(finished) return;
+  finished = true;
+  clearInterval(timerInterval);
+  els.typebox.disabled = true;
+
+  // Si el tiempo se agota (o se finaliza a mano) a mitad de un texto,
+  // se suma el crédito parcial de ese fragmento en curso.
+  if(typedChars > 0){
+    sessionCorrectWords += countCorrectWordsSoFar(els.typebox.value, currentText);
+    cumulativeTypedChars += typedChars;
+    cumulativeErrors += errorCount;
+    typedChars = 0;
+    errorCount = 0;
+  }
+
+  const mins = elapsedMinutes();
+  const totalChars = cumulativeTypedChars;
+  const totalErrors = cumulativeErrors;
+  const correct = Math.max(0, totalChars - totalErrors);
+  const words = totalChars/5;
+  const wpm = Math.round(words/mins);
+  const ppmBruto = Math.round(totalChars/mins);
+  const pnpm = Math.round(correct/mins);
+  const acc = totalChars>0 ? Math.round((correct/totalChars)*100) : 100;
+  const usedTime = durationSec - timeLeft;
+  const mm = Math.floor(usedTime/60).toString().padStart(2,'0');
+  const ss = Math.floor(usedTime%60).toString().padStart(2,'0');
+
+  els.resIdLabel.textContent = 'Nº ' + currentId;
+  els.resTimeLabel.textContent = 'tiempo utilizado ' + mm + ':' + ss;
+  els.resWpm.textContent = isFinite(wpm)?wpm:0;
+  els.resPnpm.textContent = isFinite(pnpm)?pnpm:0;
+  els.resPpm.textContent = isFinite(ppmBruto)?ppmBruto:0;
+  els.resAcc.textContent = acc+'%';
+  els.resErr.textContent = totalErrors;
+  els.resChars.textContent = totalChars;
+  els.resWordsCorrect.textContent = sessionCorrectWords;
+
+  els.wordsNote.textContent = sessionCorrectWords >= WORDS_MIN
+    ? 'Cumpliste el mínimo de 100 palabras correctas que exige el juzgado (llevás ' + sessionCorrectWords + '). Referencia orientativa de pulsaciones: en concursos administrativos suele pedirse un mínimo aproximado de 200–250 pulsaciones netas por minuto con muy baja tasa de error; varía según organismo y convocatoria.'
+    : 'Todavía no llegaste al mínimo de 100 palabras correctas que exige el juzgado (llevás ' + sessionCorrectWords + '). Practicá de nuevo para acercarte o superar ese mínimo. Referencia orientativa de pulsaciones: en concursos administrativos suele pedirse un mínimo aproximado de 200–250 pulsaciones netas por minuto con muy baja tasa de error; varía según organismo y convocatoria.';
+
+  els.test.style.display = 'none';
+  els.results.style.display = 'block';
+}
+
+els.startBtn.addEventListener('click', startSetup);
+
+els.cancelBtn.addEventListener('click', ()=>{
+  clearInterval(timerInterval);
+  els.test.style.display = 'none';
+  els.setup.style.display = 'block';
+});
+
+els.finishBtn.addEventListener('click', ()=>{
+  if(!started) beginTimerIfNeeded();
+  endTest();
+});
+
+els.retryBtn.addEventListener('click', ()=>{
+  els.textIdInput.value = currentId;
+  startSetup();
+});
+
+els.nextBtn.addEventListener('click', ()=>{
+  els.textIdInput.value = 1 + Math.floor(Math.random()*1000);
+  startSetup();
+});
+
+els.backBtn.addEventListener('click', ()=>{
+  els.results.style.display = 'none';
+  els.setup.style.display = 'block';
+});
+</script>
+</body>
+</html>

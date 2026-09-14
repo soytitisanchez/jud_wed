@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuadernillo 2026 · Poder Judicial de San Juan</title>
+<style>
+  :root{
+    --ink:#111a24;
+    --panel:#16212e;
+    --panel-2:#1c2938;
+    --line: #2b3a4a;
+    --paper:#f4f1e9;
+    --brass:#c69a3a;
+    --brass-dim:#8a6e28;
+    --good:#3f8f5f;
+    --good-bg:#173325;
+    --bad:#c1543a;
+    --bad-bg:#3a2019;
+    --text:#e9e6dc;
+    --text-dim:#a9b3bd;
+    --radius:2px;
+    --serif: Georgia, 'Times New Roman', Times, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.5;
+    min-height:100vh;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px;margin-bottom:28px;
+    gap:12px;flex-wrap:wrap;
+  }
+  header.top .mark{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    letter-spacing:.2px;
+    color:var(--paper);
+  }
+  header.top .mark small{
+    display:block;font-family:var(--sans);font-size:.72rem;color:var(--brass);
+    letter-spacing:.12em;margin-top:4px;font-weight:600;
+  }
+  .backlink{
+    background:none;border:1px solid var(--line);color:var(--text-dim);
+    font-family:var(--sans);font-size:.85rem;padding:8px 14px;border-radius:var(--radius);
+    cursor:pointer;
+  }
+  .backlink:hover{border-color:var(--brass);color:var(--paper);}
+
+  /* HOME */
+  .lede{
+    font-family:var(--serif);font-size:1.25rem;line-height:1.55;color:var(--paper);
+    max-width:62ch;margin:0 0 30px;
+  }
+  .lede em{color:var(--brass);font-style:normal;}
+
+  .exam-cta{
+    display:flex;gap:22px;align-items:center;
+    background:linear-gradient(135deg,var(--panel-2),var(--panel));
+    border:1px solid var(--brass-dim);
+    border-radius:var(--radius);
+    padding:22px 26px;margin-bottom:34px;
+    flex-wrap:wrap;
+  }
+  .exam-cta .num{
+    font-family:var(--serif);font-size:2.6rem;color:var(--brass);line-height:1;
+  }
+  .exam-cta .info{flex:1;min-width:220px;}
+  .exam-cta h2{margin:0 0 6px;font-family:var(--serif);font-size:1.25rem;color:var(--paper);font-weight:normal;}
+  .exam-cta p{margin:0;color:var(--text-dim);font-size:.92rem;}
+  .exam-cta .stats{display:flex;gap:18px;margin-top:10px;font-size:.82rem;color:var(--text-dim);}
+  .exam-cta .stats b{color:var(--paper);}
+
+  .btn{
+    font-family:var(--sans);font-size:.92rem;font-weight:600;
+    background:var(--brass);color:#1a1305;border:none;
+    padding:12px 22px;border-radius:var(--radius);cursor:pointer;
+    white-space:nowrap;
+  }
+  .btn:hover{background:#d9ac47;}
+  .btn.secondary{
+    background:transparent;border:1px solid var(--line);color:var(--paper);
+  }
+  .btn.secondary:hover{border-color:var(--brass);color:var(--brass);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  .section-title{
+    font-family:var(--serif);color:var(--paper);font-size:1.05rem;
+    margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+
+  .tema-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  .tema-card{
+    display:flex;align-items:center;gap:16px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  .tema-card .roman{
+    font-family:var(--serif);font-size:1.4rem;color:var(--brass-dim);width:2.4em;flex-shrink:0;text-align:center;
+  }
+  .tema-card .body{flex:1;min-width:160px;}
+  .tema-card h3{margin:0 0 3px;font-size:.98rem;font-weight:600;color:var(--paper);}
+  .tema-card .meta{font-size:.78rem;color:var(--text-dim);}
+  .tema-card .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  select.count-select{
+    background:var(--panel-2);color:var(--text);border:1px solid var(--line);
+    border-radius:var(--radius);padding:9px 8px;font-family:var(--sans);font-size:.82rem;
+  }
+
+  footer.note{margin-top:40px;color:var(--text-dim);font-size:.8rem;border-top:1px solid var(--line);padding-top:16px;}
+
+  /* QUIZ */
+  .quiz-head{
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+    margin-bottom:22px;flex-wrap:wrap;
+  }
+  .progress-wrap{flex:1;min-width:180px;}
+  .progress-label{font-size:.78rem;color:var(--text-dim);margin-bottom:6px;display:flex;justify-content:space-between;}
+  .progress-bar{height:5px;background:var(--panel-2);border-radius:3px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--brass);transition:width .2s;}
+  .timer{
+    font-family:var(--serif);font-size:1.7rem;color:var(--paper);
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:8px 18px;min-width:110px;text-align:center;
+  }
+  .timer.low{color:var(--bad);border-color:var(--bad);}
+
+  .q-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 26px 20px;margin-bottom:20px;
+  }
+  .q-tema-tag{
+    font-size:.72rem;letter-spacing:.05em;color:var(--brass);text-transform:uppercase;margin-bottom:10px;
+  }
+  .q-text{font-family:var(--serif);font-size:1.18rem;color:var(--paper);line-height:1.5;margin:0 0 22px;}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;
+    width:100%;text-align:left;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:var(--radius);padding:13px 16px;margin-bottom:10px;
+    color:var(--text);font-family:var(--sans);font-size:.94rem;cursor:pointer;
+  }
+  .opt:hover{border-color:var(--brass-dim);}
+  .opt .letter{
+    font-family:var(--serif);color:var(--brass);flex-shrink:0;width:1.2em;
+  }
+  .opt.selected{border-color:var(--brass);background:#26201040;}
+  .opt.correct{border-color:var(--good);background:var(--good-bg);}
+  .opt.incorrect{border-color:var(--bad);background:var(--bad-bg);}
+  .opt:disabled{cursor:default;}
+  .exp{
+    margin-top:14px;padding:12px 14px;background:var(--panel-2);border-left:3px solid var(--brass);
+    font-size:.87rem;color:var(--text-dim);border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .quiz-actions{display:flex;justify-content:flex-end;gap:10px;}
+
+  /* RESULTS */
+  .result-hero{
+    text-align:center;padding:36px 20px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);margin-bottom:28px;
+  }
+  .result-hero .verdict{
+    font-family:var(--serif);font-size:2.2rem;margin:0 0 8px;
+  }
+  .verdict.pass{color:var(--good);}
+  .verdict.fail{color:var(--bad);}
+  .result-hero .score{font-size:1.05rem;color:var(--text-dim);}
+  .result-hero .score b{color:var(--paper);font-size:1.3rem;}
+  .result-bars{display:flex;justify-content:center;gap:26px;margin-top:20px;flex-wrap:wrap;}
+  .result-bars .stat{text-align:center;}
+  .result-bars .stat .n{font-family:var(--serif);font-size:1.6rem;color:var(--paper);}
+  .result-bars .stat .l{font-size:.75rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;}
+
+  .review-item{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 20px;margin-bottom:10px;
+  }
+  .review-item.wrong{border-left:3px solid var(--bad);}
+  .review-item.right{border-left:3px solid var(--good);}
+  .review-item .rq{font-size:.95rem;color:var(--paper);margin-bottom:8px;}
+  .review-item .ra{font-size:.85rem;color:var(--text-dim);margin:2px 0;}
+  .review-item .ra.correctline{color:var(--good);}
+  .review-item .ra.wrongline{color:var(--bad);}
+  .result-actions{display:flex;gap:10px;justify-content:center;margin:26px 0 8px;flex-wrap:wrap;}
+
+  .hidden{display:none !important;}
+
+  /* TEORIA */
+  .theory-lead{
+    font-family:var(--serif);font-size:1.12rem;color:var(--paper);line-height:1.55;
+    margin:0 0 22px;
+  }
+  .theory-list{list-style:none;margin:0 0 34px;padding:0;}
+  .theory-list li{
+    position:relative;padding:12px 16px 12px 34px;margin-bottom:8px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    color:var(--text);font-size:.92rem;line-height:1.55;
+  }
+  .theory-list li::before{
+    content:"\2022";color:var(--brass);position:absolute;left:14px;top:11px;font-size:1.1rem;
+  }
+  .video-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:10px;}
+  .video-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .video-card .frame-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;}
+  .video-card .frame-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+  .video-card .vinfo{padding:12px 16px;}
+  .video-card .vinfo .vtitle{font-size:.9rem;color:var(--paper);margin:0 0 6px;line-height:1.4;}
+  .video-card .vinfo a{color:var(--brass);font-size:.8rem;text-decoration:none;}
+  .video-card .vinfo a:hover{text-decoration:underline;}
+  .resource-card{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 18px;margin-bottom:12px;
+  }
+  .resource-card .rtitle{font-size:.9rem;color:var(--paper);}
+  .resource-card .rtag{
+    display:inline-block;font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--brass);margin-bottom:4px;
+  }
+  .resource-card a.btn{padding:8px 16px;font-size:.82rem;white-space:nowrap;text-decoration:none;display:inline-block;}
+  .tema-card .controls{row-gap:8px;}
+
+  @media (max-width:600px){
+    .tema-card{flex-wrap:wrap;}
+    .exam-cta{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+<link rel="manifest" href="../../manifest.webmanifest">
+<meta name="theme-color" content="#111a24">
+</head>
+<body>
+<a href="../../index.html" style="position:fixed;bottom:16px;left:16px;z-index:999;background:#16212e;border:1px solid #2b3a4a;color:#c69a3a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:.76rem;font-weight:600;text-decoration:none;padding:7px 13px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.35);">← Judweb</a>
+<div class="wrap" id="app"></div>
+
+<script>
+const TEMAS = {"1": "Derecho Constitucional", "2": "Constitución Provincial de San Juan", "3": "Organización del Poder Judicial de San Juan", "4": "Ministerio Público y Defensa Oficial", "5": "Derecho Civil y Procesal Civil", "6": "Derecho Laboral y Procesal Laboral", "7": "Derecho de las Familias y Proceso de Familia", "8": "Derecho Penal y Procesal Penal", "9": "Normativa de Género"};
+
+const TEORIA = {
+  1: {
+    lead: "El Derecho Constitucional estudia la Constitución como norma suprema: cómo organiza el poder del Estado y qué derechos garantiza a las personas.",
+    puntos: [
+      "Constitución formal (el texto escrito) y Constitución material (cómo funciona realmente el poder en la práctica).",
+      "Poder constituyente originario (funda el Estado) y derivado (lo reforma); una Constitución es rígida cuando su reforma exige un procedimiento distinto al de las leyes comunes.",
+      "Supremacía constitucional (art. 31 CN): la Constitución, las leyes que la reglamentan y los tratados están por encima del resto del ordenamiento jurídico.",
+      "Control de constitucionalidad: los jueces pueden declarar inaplicable una norma que contradiga la Constitución.",
+      "La reforma de 1994 incorporó tratados de derechos humanos con jerarquía constitucional (art. 75 inc. 22), el Ministerio Público como órgano independiente (art. 120) y la autonomía de la Ciudad de Buenos Aires, entre otros cambios."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"Introducción al Derecho Constitucional (Constitución Nacional Argentina)", url:"https://www.youtube.com/watch?v=mictl6pKTq8"},
+      {tipo:"video", titulo:"Supremacía y jerarquía constitucional", url:"https://www.youtube.com/watch?v=h3c_n7bSYaU"}
+    ]
+  },
+  2: {
+    lead: "Cada provincia argentina dicta su propia Constitución (arts. 5, 121 a 123 CN): es un poder constituyente 'de segundo grado', condicionado por la Constitución Nacional.",
+    puntos: [
+      "La Constitución de San Juan fue sancionada en 1986 y tuvo reformas posteriores (por ejemplo, el art. 175 fue modificado por la Ley 8199 del año 2001).",
+      "Organiza los tres poderes provinciales: Poder Ejecutivo (Gobernador/a), Poder Legislativo (Cámara de Diputados, de composición unicameral) y Poder Judicial.",
+      "Contiene su propia declaración de derechos y garantías para los habitantes de la provincia, además de los que ya reconoce la Constitución Nacional.",
+      "Crea organismos de control propios, como la Fiscalía de Estado y el Tribunal de Cuentas.",
+      "Debe respetar el sistema representativo, republicano y federal, y asegurar la administración de justicia, el régimen municipal y la educación primaria, tal como exige el art. 5 de la Constitución Nacional."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"Constituciones Provinciales: qué son y qué regulan", url:"https://www.youtube.com/watch?v=mPFbiWOtvj8"},
+      {tipo:"enlace", titulo:"Texto oficial de la Constitución de San Juan (PDF)", url:"https://www2.hcdn.gob.ar/export/hcdn/secparl/dgral_info_parlamentaria/dip/archivos/constitucion-sanjuan.pdf"}
+    ]
+  },
+  3: {
+    lead: "El Poder Judicial de San Juan administra justicia dentro de la provincia, con su propia estructura de tribunales y fueros.",
+    puntos: [
+      "La Corte de Justicia es el máximo tribunal provincial; actúa como última instancia y ejerce la superintendencia sobre el resto del Poder Judicial.",
+      "Existen distintos fueros según la materia: civil, penal, laboral, de familia, entre otros, cada uno con juzgados y cámaras de apelación propias.",
+      "Las causas suelen recorrer varias instancias: juzgados de primera instancia, cámaras de apelación y, en su caso, la Corte de Justicia.",
+      "Un Consejo de la Magistratura interviene en la selección de jueces y juezas mediante concursos públicos de oposición y antecedentes.",
+      "El Poder Judicial provincial es independiente de los poderes Ejecutivo y Legislativo, principio clave para garantizar imparcialidad en sus decisiones."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"Poder Judicial: esquema general (Constitución Nacional, Sección Tercera)", url:"https://www.youtube.com/watch?v=SHSByd2drEY"},
+      {tipo:"video", titulo:"Estructura del Poder Judicial", url:"https://www.youtube.com/watch?v=Mja29Bvix7U"}
+    ]
+  },
+  4: {
+    lead: "El Ministerio Público es un órgano independiente de los tres poderes del Estado (art. 120 CN), con dos ramas: la Fiscal y la de la Defensa.",
+    puntos: [
+      "El Ministerio Público Fiscal promueve y ejerce la acción penal pública: investiga delitos y acusa en representación de la sociedad.",
+      "El Ministerio Público de la Defensa (Defensa Oficial) garantiza el derecho de defensa en juicio, asistiendo gratuitamente a quienes no pueden pagar un abogado particular.",
+      "A nivel nacional está encabezado por el Procurador/a General y el Defensor/a General; en San Juan existe una estructura equivalente dentro del Poder Judicial provincial.",
+      "Sus integrantes gozan de inmunidades funcionales para actuar con independencia de criterio.",
+      "La Defensa Oficial también interviene en materia civil, laboral y de familia, no solo en lo penal (por ejemplo, en alimentos, divorcios o sucesorios de personas sin recursos)."
+    ],
+    recursos: [
+      {tipo:"canal", titulo:"Canal oficial: Ministerio Público de la Defensa de Argentina", url:"https://www.youtube.com/@mpdargentina/videos"},
+      {tipo:"canal", titulo:"Canal oficial: Ministerio Público Fiscal (Procuración General)", url:"https://www.youtube.com/user/PGNcomunicacion"}
+    ]
+  },
+  5: {
+    lead: "El Derecho Civil regula las relaciones entre particulares; en Argentina se rige principalmente por el Código Civil y Comercial (Ley 26.994, vigente desde 2015).",
+    puntos: [
+      "Regula a la persona humana (capacidad, nombre, domicilio), los bienes, las obligaciones, los contratos, los derechos reales y las sucesiones.",
+      "Incorporó principios como la buena fe, el abuso del derecho y la protección de la vivienda familiar.",
+      "El Derecho Procesal Civil establece cómo se tramita un juicio: demanda, contestación, ofrecimiento y producción de prueba, alegatos, sentencia y recursos.",
+      "Principios procesales clave: bilateralidad (ambas partes deben poder ser oídas), congruencia (el juez decide sobre lo pedido) y preclusión (las etapas del proceso no se repiten una vez cumplidas).",
+      "Existen distintos tipos de procesos según la complejidad del asunto: ordinario, sumario/abreviado y ejecutivo, entre otros."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"El Código Civil y Comercial argentino: introducción", url:"https://www.youtube.com/watch?v=10adtfdgJTc"},
+      {tipo:"video", titulo:"Estructura del nuevo Código Civil y Comercial de la Nación", url:"https://www.youtube.com/watch?v=6HKc8LYBdcY"}
+    ]
+  },
+  6: {
+    lead: "El Derecho Laboral regula la relación entre trabajadores y empleadores, principalmente a través de la Ley de Contrato de Trabajo (Ley 20.744).",
+    puntos: [
+      "Principio protectorio: ante la desigualdad entre las partes, la ley protege a la parte más débil de la relación, que es el trabajador.",
+      "Irrenunciabilidad de derechos: el trabajador no puede renunciar válidamente a los derechos que la ley le reconoce.",
+      "Primacía de la realidad: importa lo que ocurre efectivamente en los hechos, más allá de lo que digan los papeles o el contrato firmado.",
+      "Derechos básicos: jornada limitada, descanso, vacaciones pagas, salario mínimo, indemnización por despido sin causa.",
+      "El Derecho Procesal Laboral suele exigir una instancia de conciliación obligatoria antes del juicio, y tramita ante tribunales o juzgados del trabajo especializados."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"Principios del Derecho Laboral", url:"https://www.youtube.com/watch?v=9pWwP34ej2o"},
+      {tipo:"video", titulo:"El Contrato de Trabajo (LCT): concepto, características y elementos", url:"https://www.youtube.com/watch?v=btvgKA8vM9s"}
+    ]
+  },
+  7: {
+    lead: "El Código Civil y Comercial habla de 'Derecho de las Familias', en plural, para reconocer la diversidad de formas familiares existentes hoy.",
+    puntos: [
+      "Regula el matrimonio, las uniones convivenciales, la filiación (por naturaleza, técnicas de reproducción humana asistida y adopción) y la responsabilidad parental.",
+      "El interés superior del niño, niña o adolescente es el principio rector en todas las decisiones que los afectan.",
+      "El proceso de familia tiene reglas propias: oralidad, inmediación (contacto directo del juez con las partes), informalidad relativa y actuación de oficio del juez en ciertos casos.",
+      "Se busca resolver los conflictos familiares priorizando el diálogo y la mediación antes que la confrontación judicial.",
+      "Incluye también el régimen de alimentos, cuidado personal de los hijos y régimen de comunicación (antes llamado 'régimen de visitas')."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"¿Qué es el Derecho de Familia? Fácil y con ejemplos", url:"https://www.youtube.com/watch?v=zJe2BaToue4"},
+      {tipo:"video", titulo:"Derecho de Familia: introducción", url:"https://www.youtube.com/watch?v=XNG8EnlqjeQ"}
+    ]
+  },
+  8: {
+    lead: "El Derecho Penal define qué conductas son delitos y qué penas les corresponden; el Derecho Procesal Penal establece cómo se investiga y juzga a una persona.",
+    puntos: [
+      "Principio de legalidad: nadie puede ser penado sin una ley previa que establezca el delito y la pena (nullum crimen, nulla poena sine lege).",
+      "Presunción de inocencia y derecho de defensa en juicio: toda persona se presume inocente hasta que una sentencia firme diga lo contrario.",
+      "Sistema acusatorio: separa claramente las funciones de investigar y acusar (a cargo del fiscal) de la de juzgar (a cargo del juez), a diferencia del viejo sistema inquisitivo.",
+      "Etapas típicas del proceso penal: investigación o instrucción, y juicio (oral y público en la mayoría de los sistemas modernos).",
+      "San Juan, como la mayoría de las provincias, avanzó hacia un Código Procesal Penal de tipo acusatorio, con mayor protagonismo de fiscales y audiencias orales."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"Derecho Penal: ¿qué es? Todo explicado", url:"https://www.youtube.com/watch?v=--FbKFsEk1M"},
+      {tipo:"video", titulo:"En 3 minutos: claves del régimen procesal penal (sistema acusatorio)", url:"https://www.youtube.com/watch?v=eGsmiC0VnOc"}
+    ]
+  },
+  9: {
+    lead: "La normativa de género establece el marco legal para prevenir, sancionar y erradicar la violencia y la discriminación por razones de género en Argentina.",
+    puntos: [
+      "Ley 26.485 de Protección Integral a las Mujeres: define los distintos tipos de violencia (física, psicológica, sexual, económica, simbólica) y las modalidades en que puede darse (doméstica, laboral, institucional, entre otras).",
+      "Ley Micaela (27.499): obliga a capacitar en género y violencia contra las mujeres a todas las personas que se desempeñan en la función pública, en los tres poderes del Estado.",
+      "Ley de Identidad de Género (26.743): reconoce el derecho de las personas a ser tratadas según su identidad autopercibida.",
+      "Ley de Matrimonio Igualitario (26.618): permite el matrimonio entre personas del mismo sexo con los mismos derechos y obligaciones.",
+      "El Poder Judicial debe incorporar la perspectiva de género al analizar los casos, evitando estereotipos y garantizando un acceso a la justicia libre de revictimización."
+    ],
+    recursos: [
+      {tipo:"video", titulo:"Ley 26.485 de Protección Integral a las Mujeres", url:"https://www.youtube.com/watch?v=dmxLQ-HqBZY"},
+      {tipo:"video", titulo:"Ley Micaela: ¿cuáles son las violencias por motivos de género?", url:"https://www.youtube.com/watch?v=T-dFITULQZs"}
+    ]
+  }
+};
+const QUESTIONS = [{"tema": 1, "q": "¿De qué palabras latinas proviene el término \"Constitución\"?", "opts": ["\"cum\" (con) y \"statuere\" (establecer)", "\"constituere\" y \"lex\"", "\"populus\" y \"status\"", "\"norma\" y \"regere\""], "correct": 0, "exp": "El vocablo surge de la unión de \"cum\" (con) y \"statuere\" (establecer)."}, {"tema": 1, "q": "Una Constitución es \"rígida\" cuando:", "opts": ["Solo puede modificarse mediante procedimientos diferentes a los de la legislación común", "Se reforma con el mismo mecanismo que las leyes comunes", "No puede reformarse nunca", "Es dictada unilateralmente por un órgano estatal"], "correct": 0, "exp": ""}, {"tema": 1, "q": "¿Cuáles son los contenidos considerados pétreos de la Constitución Argentina de 1853?", "opts": ["La democracia, el federalismo, la forma republicana y la confesionalidad del Estado", "Solo la forma republicana de gobierno", "El presidencialismo puro y la unidad de mando", "La monarquía constitucional y el centralismo"], "correct": 0, "exp": ""}, {"tema": 1, "q": "La supremacía de la Constitución Nacional está consagrada expresamente en el artículo:", "opts": ["Artículo 31", "Artículo 14", "Artículo 75", "Artículo 18"], "correct": 0, "exp": ""}, {"tema": 1, "q": "¿Qué artículo dispone que los Gobernadores de Provincia son agentes naturales del Gobierno Federal para hacer cumplir la Constitución y las leyes de la Nación?", "opts": ["Artículo 110", "Artículo 5", "Artículo 121", "Artículo 128"], "correct": 0, "exp": ""}, {"tema": 1, "q": "La parte dogmática de la Constitución Nacional, tras la reforma de 1994, comprende:", "opts": ["Los artículos 1 a 35 (declaraciones, derechos y garantías) y 36 a 43 (nuevos derechos y garantías)", "Los artículos 44 a 129 exclusivamente", "Solo el Preámbulo", "Los artículos 1 a 129 en su totalidad"], "correct": 0, "exp": ""}, {"tema": 1, "q": "La parte orgánica de la Constitución Nacional se extiende:", "opts": ["Desde el artículo 44 al 129", "Desde el artículo 1 al 35", "Desde el artículo 36 al 43", "Desde el artículo 1 al 43"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Dentro de las relaciones de la estructura federal, la \"participación\" se institucionaliza principalmente a través de:", "opts": ["La Cámara de Senadores, cuyos miembros representan a las provincias", "El Consejo de la Magistratura", "La Auditoría General de la Nación", "El Jefe de Gabinete de Ministros"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Conforme a los artículos 5, 122 y 123 de la Constitución Nacional, las provincias:", "opts": ["No son soberanas pero sí autónomas", "Son plenamente soberanas", "Carecen de autonomía", "Son autárquicas únicamente"], "correct": 0, "exp": ""}, {"tema": 1, "q": "El artículo 129 de la Constitución Nacional establece que la Ciudad de Buenos Aires:", "opts": ["Tendrá un régimen de gobierno autónomo con Jefe de Gobierno elegido directamente por el pueblo", "Es una provincia más de la Nación", "Depende directamente del Poder Ejecutivo Nacional", "No posee facultades de legislación propia"], "correct": 0, "exp": ""}, {"tema": 1, "q": "El Hábeas Corpus fue incorporado expresamente por primera vez a la Constitución Nacional a través de la reforma de 1994, en el artículo:", "opts": ["43 (último párrafo)", "18", "32", "14 bis"], "correct": 0, "exp": ""}, {"tema": 1, "q": "En la Constitución de la Provincia de San Juan, el Hábeas Corpus está previsto en el artículo:", "opts": ["32", "40", "41", "197"], "correct": 0, "exp": ""}, {"tema": 1, "q": "El Amparo fue incorporado a la Constitución Nacional en la reforma de 1994, en el artículo:", "opts": ["43", "18", "14 bis", "75"], "correct": 0, "exp": ""}, {"tema": 1, "q": "¿En qué artículo de la Constitución de San Juan de 1986 se contempla originalmente el Amparo?", "opts": ["Artículo 40", "Artículo 32", "Artículo 197", "Artículo 43"], "correct": 0, "exp": ""}, {"tema": 1, "q": "El Consejo de la Magistratura de la Nación fue incorporado por la reforma constitucional de 1994 en el artículo:", "opts": ["114", "115", "110", "129"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Entre las atribuciones del Consejo de la Magistratura (nacional) NO se encuentra:", "opts": ["Designar directamente a los jueces de la Corte Suprema", "Seleccionar mediante concursos públicos a los postulantes a magistraturas inferiores", "Administrar los recursos y ejecutar el presupuesto del Poder Judicial", "Ejercer facultades disciplinarias sobre magistrados"], "correct": 0, "exp": "La designación de los jueces de la Corte Suprema corresponde al Presidente con acuerdo del Senado, no al Consejo de la Magistratura."}, {"tema": 1, "q": "El Jurado de Enjuiciamiento previsto en el artículo 115 de la Constitución Nacional tiene por objeto:", "opts": ["Remover a los jueces de tribunales inferiores de la Nación por las causales del artículo 53", "Designar a los ministros de la Corte Suprema", "Sancionar leyes federales", "Ejercer el control de constitucionalidad"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Si transcurren 180 días desde la decisión de abrir el procedimiento de remoción sin que se dicte el fallo del Jurado de Enjuiciamiento, corresponde:", "opts": ["Archivar las actuaciones y, en su caso, reponer al juez suspendido", "Remover automáticamente al juez", "Prorrogar el plazo por otros 180 días", "Elevar la causa a la Corte Suprema"], "correct": 0, "exp": ""}, {"tema": 1, "q": "La designación de los miembros de la Corte Suprema de Justicia de la Nación la efectúa:", "opts": ["El Presidente de la Nación con acuerdo del Senado por dos tercios de sus miembros presentes, en sesión pública", "El Congreso por mayoría simple", "El Consejo de la Magistratura por sí solo", "El Jurado de Enjuiciamiento"], "correct": 0, "exp": ""}, {"tema": 1, "q": "La competencia originaria de la Corte Suprema de Justicia de la Nación comprende, entre otros casos:", "opts": ["Las causas en que es parte una provincia y las concernientes a embajadores extranjeros", "Todas las causas penales del país", "Todos los recursos de apelación ordinaria", "Los conflictos entre municipios"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Según el artículo 18 de la Constitución Nacional, la prisión preventiva y demás medidas de coerción tienen carácter:", "opts": ["Preventivo, cautelar y provisional", "Punitivo y definitivo", "Meramente discrecional del fiscal", "Automático ante cualquier imputación"], "correct": 0, "exp": ""}, {"tema": 1, "q": "El Congreso de la Nación es un órgano bicameral compuesto por:", "opts": ["La Cámara de Diputados y la Cámara de Senadores", "Solo la Cámara de Diputados", "Solo el Senado", "La Cámara de Diputados y el Jefe de Gabinete"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Para ser Senador de la Nación se requiere una edad mínima de:", "opts": ["30 años", "25 años", "35 años", "28 años"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Para ser Diputado de la Nación se requiere una edad mínima de:", "opts": ["25 años", "30 años", "21 años", "35 años"], "correct": 0, "exp": ""}, {"tema": 1, "q": "Tras la reforma de 1994, el Presidente y Vicepresidente de la Nación duran en su mandato:", "opts": ["4 años, con posibilidad de una sola reelección consecutiva", "6 años sin reelección", "5 años con reelección indefinida", "4 años sin posibilidad de reelección"], "correct": 0, "exp": ""}, {"tema": 2, "q": "La Constitución de la Provincia de San Juan actualmente vigente fue sancionada el:", "opts": ["26 de abril de 1986", "23 de abril de 1986", "7 de mayo de 1986", "1 de marzo de 1986"], "correct": 0, "exp": "Sancionada el 26/04/1986, publicada en el Boletín Oficial el 7/05/1986."}, {"tema": 2, "q": "La Constitución de San Juan de 1986 está compuesta por un total de:", "opts": ["281 artículos", "218 artículos", "197 artículos", "120 artículos"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El territorio de la Provincia de San Juan se divide, según el artículo 7 de su Constitución, en:", "opts": ["Diecinueve departamentos", "Diecisiete departamentos", "Veinticinco departamentos", "Once departamentos"], "correct": 0, "exp": ""}, {"tema": 2, "q": "La Sección Primera de la Constitución de San Juan, \"Declaraciones, Derechos y Garantías\", comprende los artículos:", "opts": ["1 al 120", "1 al 197", "121 al 197", "1 al 281"], "correct": 0, "exp": ""}, {"tema": 2, "q": "Conforme al artículo 201 de la Constitución de San Juan, la Corte de Justicia está integrada por:", "opts": ["Cinco miembros como mínimo, número que siempre debe ser impar", "Tres miembros", "Siete miembros fijos", "Nueve miembros"], "correct": 0, "exp": ""}, {"tema": 2, "q": "Para ser miembro de la Corte de Justicia de San Juan se requiere, entre otros requisitos, una edad mínima de:", "opts": ["30 años", "25 años", "35 años", "28 años"], "correct": 0, "exp": ""}, {"tema": 2, "q": "Los miembros de la Corte de Justicia, el Fiscal General y los magistrados judiciales de San Juan son nombrados por:", "opts": ["La Cámara de Diputados, a propuesta de una terna elevada por el Consejo de la Magistratura", "El Gobernador directamente", "La Corte de Justicia en pleno", "Elección popular directa"], "correct": 0, "exp": ""}, {"tema": 2, "q": "Las vacantes de funcionarios judiciales en San Juan deben cubrirse dentro de:", "opts": ["Noventa días de producidas", "Treinta días", "Sesenta días", "Ciento ochenta días"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El Consejo de la Magistratura de San Juan (art. 214) está integrado por:", "opts": ["Dos abogados, un legislador provincial, un miembro de la Corte de Justicia y un ministro del Poder Ejecutivo", "Solo por miembros de la Corte de Justicia", "Cinco legisladores provinciales", "El Gobernador y su gabinete"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El mandato de los miembros del Consejo de la Magistratura de San Juan dura:", "opts": ["Cuatro años, pudiendo ser reelectos", "Dos años sin reelección", "Seis años", "Indefinido"], "correct": 0, "exp": ""}, {"tema": 2, "q": "Según el artículo 209 de la Constitución de San Juan, la interpretación que haga la Corte de Justicia en sus pronunciamientos plenarios es:", "opts": ["De aplicación obligatoria para todos los tribunales inferiores (jurisprudencia vinculante)", "Meramente orientativa", "Solo aplicable al caso concreto", "Revisable por cualquier juez inferior sin trámite alguno"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El Poder Judicial de San Juan, según el artículo 197 de su Constitución, es desempeñado por:", "opts": ["Una Corte de Justicia, Jueces y Jueces de Paz Letrados y demás tribunales que la ley establezca", "Solo la Corte de Justicia", "Solo Jueces de Paz", "La Legislatura y sus comisiones"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El Ministerio Público, conforme al artículo 202 de la Constitución de San Juan, está integrado por:", "opts": ["El Fiscal General de la Corte, los Fiscales de Cámara, los Agentes Fiscales y los Asesores y Defensores Oficiales", "Únicamente por el Fiscal General", "Los jueces de Cámara", "El Defensor del Pueblo"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El Poder Legislativo de San Juan (Cámara de Diputados) está regulado en los artículos:", "opts": ["131 al 172", "173 al 196", "197 al 218", "239 al 255"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El Régimen Municipal en la Constitución de San Juan está regulado en los artículos:", "opts": ["239 al 255", "197 al 218", "271 al 278", "131 al 172"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El Juicio Político y el Jurado de Enjuiciamiento en la Constitución de San Juan se regulan en los artículos:", "opts": ["219 al 234", "201 al 218", "131 al 172", "256 al 262"], "correct": 0, "exp": ""}, {"tema": 2, "q": "La Convención Constituyente de la Provincia de San Juan está regulada en los artículos:", "opts": ["271 al 278", "197 al 218", "1 al 14", "239 al 255"], "correct": 0, "exp": ""}, {"tema": 2, "q": "El tratamiento que corresponde a los miembros de la Corte de Justicia de San Juan, según el artículo 211, es:", "opts": ["\"Señor Ministro\"", "\"Señor Presidente\"", "\"Su Excelencia\"", "\"Señor Juez de Cámara\""], "correct": 0, "exp": ""}, {"tema": 2, "q": "El amparo por mora, en la Constitución de San Juan, está previsto en el artículo:", "opts": ["41", "32", "197", "5"], "correct": 0, "exp": ""}, {"tema": 2, "q": "Según el artículo 218 de la Constitución de San Juan, la abogacía es considerada:", "opts": ["Una función pública no estatal, auxiliar del Poder Judicial", "Una actividad meramente privada sin regulación", "Un cargo público estatal", "Parte integrante del Ministerio Público"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Ley Orgánica del Poder Judicial (LOPJ) actualmente vigente en San Juan es la:", "opts": ["Ley 2352-O, sancionada el 17 de enero de 2022", "Ley 358-E de 1988", "Ley 754-O", "Ley 1851-O"], "correct": 0, "exp": "La Ley 2352-O abrogó a la anterior Ley 358-E (antes Ley 5854)."}, {"tema": 3, "q": "El territorio de la Provincia de San Juan se divide, a los efectos de la competencia judicial, en:", "opts": ["Dos circunscripciones judiciales: Capital y Jáchal", "Tres circunscripciones", "Una sola circunscripción", "Diecinueve circunscripciones"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Segunda Circunscripción Judicial de San Juan, con asiento en la ciudad de Jáchal, comprende los departamentos de:", "opts": ["Jáchal e Iglesia", "Jáchal y Calingasta", "Jáchal y Valle Fértil", "Iglesia y Ullum"], "correct": 0, "exp": ""}, {"tema": 3, "q": "Según el artículo 88 de la LOPJ, la cantidad de Juzgados de Paz Letrados en la Provincia de San Juan es de:", "opts": ["25", "19", "11", "17"], "correct": 0, "exp": ""}, {"tema": 3, "q": "De los Juzgados de Paz Letrados del Gran San Juan, ¿cuántos tienen asiento en el Departamento Capital?", "opts": ["Siete", "Cuatro", "Once", "Dos"], "correct": 0, "exp": ""}, {"tema": 3, "q": "Los criterios más relevantes para distribuir la competencia entre los tribunales son:", "opts": ["Territorio, materia, grado y cuantía", "Solo el territorio", "Solo la materia y el turno", "Antigüedad del juez y ubicación geográfica"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Corte de Justicia de San Juan, conforme a la LOPJ, se divide en:", "opts": ["Tres salas de tres miembros cada una", "Dos salas de cinco miembros", "Cinco salas unipersonales", "Una sola sala en pleno"], "correct": 0, "exp": ""}, {"tema": 3, "q": "El período de presidencia anual de la Corte de Justicia de San Juan comienza:", "opts": ["El 1 de marzo de cada año y finaliza el último día de febrero del año siguiente", "El 1 de enero y finaliza el 31 de diciembre", "El 1 de mayo y finaliza el 30 de abril", "No tiene un período fijo"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Cámara de Apelaciones en lo Civil, Comercial, Minería, Familia y Contencioso Administrativo de San Juan está compuesta por:", "opts": ["12 miembros divididos en 4 salas de tres miembros cada una", "6 miembros en 2 salas", "3 miembros", "9 miembros en 3 salas"], "correct": 0, "exp": ""}, {"tema": 3, "q": "El Tribunal de Impugnación (Ley 1851-O) está integrado por:", "opts": ["9 miembros", "3 miembros", "5 miembros", "12 miembros"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Cámara en lo Penal y Correccional (Ley 754-O) está integrada por:", "opts": ["3 miembros", "9 miembros", "6 miembros", "5 miembros"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Cámara del Trabajo de San Juan está integrada por:", "opts": ["6 miembros divididos en 2 salas de 3 miembros", "3 miembros en una sola sala", "9 miembros en 3 salas", "12 miembros"], "correct": 0, "exp": ""}, {"tema": 3, "q": "El Recurso Extraordinario Provincial en San Juan está regulado por la:", "opts": ["Ley 2353-O", "Ley 2352-O", "Ley 1851-O", "Ley 633-E"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Oficina Judicial, según el artículo 97 de la LOPJ, es definida como:", "opts": ["Una estructura organizada por la Corte de Justicia que sirve de soporte y apoyo a la actividad jurisdiccional", "Un tribunal de alzada", "Un organismo del Ministerio Público", "Una dependencia del Poder Ejecutivo provincial"], "correct": 0, "exp": ""}, {"tema": 3, "q": "A los Jueces Penales de la Niñez y Adolescencia les corresponde, de modo exclusivo y excluyente:", "opts": ["La investigación y juzgamiento de hechos delictivos en los que aparezcan involucrados niños, niñas o adolescentes", "Solo los procesos civiles de familia", "La ejecución de penas de adultos", "La administración de establecimientos penitenciarios"], "correct": 0, "exp": ""}, {"tema": 3, "q": "El Sistema Procesal Penal Acusatorio Adversarial (Ley 1851-O) comenzó a regir en San Juan, conforme al Acuerdo General N° 45/2021, a partir del:", "opts": ["26 de febrero de 2021", "1 de enero de 2020", "24 de febrero de 2024", "17 de enero de 2022"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La extensión del Sistema Procesal Penal Acusatorio Adversarial a la totalidad de los delitos de jurisdicción provincial se dispuso mediante la Acordada 6/2024, a partir del:", "opts": ["24 de febrero de 2024", "26 de febrero de 2021", "1 de marzo de 2022", "8 de noviembre de 2019"], "correct": 0, "exp": ""}, {"tema": 3, "q": "La Corte de Justicia de San Juan designa anualmente, entre los abogados del Foro, un número de Conjueces para casos de impedimento equivalente a:", "opts": ["Diez (10) Conjueces", "Cinco (5) Conjueces", "Tres (3) Conjueces", "Veinte (20) Conjueces"], "correct": 0, "exp": ""}, {"tema": 3, "q": "Los jueces con competencia en materia comercial especial de San Juan conocen, entre otros asuntos, en:", "opts": ["Concursos y quiebras y trámites del Registro Público de Comercio", "Delitos económicos", "Causas de familia", "Causas laborales"], "correct": 0, "exp": ""}, {"tema": 4, "q": "La Ley del Ministerio Público de San Juan (según Digesto Jurídico) es la:", "opts": ["Ley N° 633-E (antes Ley 7014)", "Ley N° 2179-E", "Ley N° 754-O", "Ley N° 2352-O"], "correct": 0, "exp": ""}, {"tema": 4, "q": "Según el artículo 1 de la Ley del Ministerio Público, este organismo:", "opts": ["Es órgano del Poder Judicial y goza de independencia orgánico funcional", "Es un órgano del Poder Ejecutivo", "Depende directamente del Poder Legislativo", "Carece de independencia funcional"], "correct": 0, "exp": ""}, {"tema": 4, "q": "El Ministerio Público de San Juan está integrado por:", "opts": ["El Fiscal General de la Corte, los Fiscales de Cámara, los Agentes Fiscales y los Asesores y Defensores Oficiales", "Solo por el Fiscal General de la Corte", "Solo por Agentes Fiscales", "Jueces de primera instancia"], "correct": 0, "exp": ""}, {"tema": 4, "q": "Para ser Fiscal General de la Corte de San Juan se requiere, entre otros requisitos:", "opts": ["Diez años de ejercicio profesional o desempeño en la magistratura y treinta años de edad como mínimo", "Cinco años de ejercicio profesional y veinticinco años de edad", "No se exige título de abogado", "Ser designado directamente por el Gobernador"], "correct": 0, "exp": ""}, {"tema": 4, "q": "Los miembros del Ministerio Público de San Juan son designados por:", "opts": ["La Cámara de Diputados, a propuesta de una terna elevada por el Consejo de la Magistratura", "El Fiscal General directamente", "Elección popular", "El Poder Ejecutivo sin intervención de otros órganos"], "correct": 0, "exp": ""}, {"tema": 4, "q": "El Fiscal General de la Corte puede imponer a los miembros del Ministerio Público sanciones de suspensión de hasta:", "opts": ["Treinta (30) días", "Diez (10) días", "Sesenta (60) días", "Noventa (90) días"], "correct": 0, "exp": ""}, {"tema": 4, "q": "Contra las sanciones disciplinarias impuestas por el Fiscal General de la Corte procede:", "opts": ["El Recurso de Apelación ante la Corte de Justicia", "No existe recurso alguno", "El Recurso de Casación", "Un amparo directo ante la Cámara de Diputados"], "correct": 0, "exp": ""}, {"tema": 4, "q": "La Defensa Oficial de San Juan se rige por la Ley Provincial:", "opts": ["N° 2179-E", "N° 633-E", "N° 754-O", "N° 2353-O"], "correct": 0, "exp": ""}, {"tema": 4, "q": "Uno de los principios que rige la actuación de la Defensa Oficial es la:", "opts": ["Gratuidad de sus servicios para quienes acrediten las condiciones exigidas", "Onerosidad obligatoria", "Dependencia jerárquica del Ministerio Público Fiscal", "Publicidad absoluta de todos los casos"], "correct": 0, "exp": ""}, {"tema": 4, "q": "La intervención de la Defensa Oficial en un proceso tiene carácter:", "opts": ["Supletorio, cesando cuando la persona cuenta con defensa particular", "Permanente e irrenunciable", "Obligatorio para todo justiciable, tenga o no defensor privado", "Exclusivo para causas penales"], "correct": 0, "exp": ""}, {"tema": 4, "q": "El órgano máximo de la Defensa Oficial de San Juan es:", "opts": ["El Defensor General", "El Fiscal General", "La Corte de Justicia", "El Consejo de la Magistratura"], "correct": 0, "exp": ""}, {"tema": 4, "q": "El deber de confidencialidad de la Defensa Oficial implica que:", "opts": ["Todo el personal que la integra se encuentra sometido al secreto profesional respecto de los casos que atiende", "Los expedientes son públicos sin restricción", "Solo el Defensor General debe guardar reserva", "No existe secreto profesional en la función pública"], "correct": 0, "exp": ""}, {"tema": 5, "q": "Según el artículo 1 del Código Civil y Comercial (Fuentes y aplicación), los casos que rige el Código deben resolverse:", "opts": ["Conforme a la Constitución Nacional y los tratados de derechos humanos en los que la República sea parte", "Solo conforme a la letra estricta de la ley", "Exclusivamente según los usos y costumbres", "Según el criterio discrecional del juez, sin sujeción a norma alguna"], "correct": 0, "exp": ""}, {"tema": 5, "q": "El artículo 2 del Código Civil y Comercial (Interpretación) establece que la ley debe interpretarse teniendo en cuenta:", "opts": ["Sus palabras, finalidades, leyes análogas, tratados de derechos humanos y los principios y valores jurídicos, de modo coherente con el ordenamiento", "Únicamente la intención original del legislador de 1869", "Solo la letra literal de la norma", "Exclusivamente la jurisprudencia extranjera"], "correct": 0, "exp": ""}, {"tema": 5, "q": "El artículo 3 del Código Civil y Comercial (Deber de resolver) establece que el juez debe:", "opts": ["Resolver los asuntos sometidos a su jurisdicción mediante una decisión razonablemente fundada", "Abstenerse de resolver ante lagunas legales", "Remitir el caso al Poder Legislativo", "Resolver únicamente por analogía con el derecho penal"], "correct": 0, "exp": ""}, {"tema": 5, "q": "Conforme al artículo 5 del Código Civil y Comercial, las leyes rigen:", "opts": ["Después del octavo día de su publicación oficial, o desde el día que ellas determinen", "Inmediatamente desde su sanción por el Congreso", "A los treinta días de publicadas siempre", "Desde su promulgación por el Poder Ejecutivo únicamente"], "correct": 0, "exp": ""}, {"tema": 5, "q": "El artículo 7 del Código Civil y Comercial (Eficacia temporal) establece como principio general que las leyes:", "opts": ["No tienen efecto retroactivo, sean o no de orden público, salvo disposición en contrario", "Siempre tienen efecto retroactivo", "Solo rigen para el futuro sin excepción alguna", "Se aplican retroactivamente en materia de consumo salvo que perjudique al consumidor"], "correct": 0, "exp": ""}, {"tema": 5, "q": "El principio de inexcusabilidad (art. 8 CCyC) establece que:", "opts": ["La ignorancia de las leyes no sirve de excusa para su cumplimiento, salvo excepción autorizada por el ordenamiento", "Toda persona puede alegar desconocimiento de la ley para eximirse de cumplirla", "Solo los abogados están obligados a conocer la ley", "La ignorancia de la ley exime de responsabilidad civil"], "correct": 0, "exp": ""}, {"tema": 5, "q": "En el proceso civil, se adquiere la calidad de \"parte\" (actora o demandada):", "opts": ["Por la sola circunstancia de proponer la demanda como actor o ser llamado a contestarla como demandado", "Solo cuando se dicta sentencia definitiva", "Únicamente si se cuenta con patrocinio letrado", "Solo cuando la pretensión resulta finalmente fundada"], "correct": 0, "exp": ""}, {"tema": 5, "q": "Según el artículo 39 del Código Procesal Civil de San Juan, toda persona que litigue ante los tribunales de la provincia debe constituir:", "opts": ["Domicilio procesal dentro de la circunscripción judicial correspondiente y domicilio procesal electrónico", "Solo domicilio real", "Domicilio en la Capital Federal", "Domicilio ante el Consejo de la Magistratura"], "correct": 0, "exp": ""}, {"tema": 5, "q": "El domicilio procesal en San Juan debe estar constituido:", "opts": ["Dentro del anillo interno de la Av. de Circunvalación", "En cualquier punto del país", "Únicamente en el departamento Capital sin restricción de zona", "Fuera del radio urbano"], "correct": 0, "exp": ""}, {"tema": 5, "q": "Entre los distintos tipos de proceso civil se encuentran:", "opts": ["El de conocimiento (ordinario y abreviado), el de ejecución y el concursal", "Solo el proceso ordinario", "Solo el proceso sucesorio", "El proceso penal y el proceso laboral"], "correct": 0, "exp": ""}, {"tema": 5, "q": "El Código Civil y Comercial de la Nación rige, entre otras materias:", "opts": ["Los sujetos de derecho, los hechos y actos jurídicos y los contratos", "Únicamente los delitos y las penas", "Solo el derecho tributario", "Solo el derecho administrativo"], "correct": 0, "exp": ""}, {"tema": 5, "q": "Cuando fallece una de las partes en un proceso civil, el juez debe:", "opts": ["Suspender la tramitación y citar a los herederos o representantes legales", "Continuar el proceso sin ninguna citación", "Archivar automáticamente la causa", "Iniciar de oficio un nuevo proceso"], "correct": 0, "exp": ""}, {"tema": 6, "q": "Según el artículo 4 de la Ley de Contrato de Trabajo, constituye trabajo:", "opts": ["Toda actividad lícita que se preste a favor de quien tiene la facultad de dirigirla, mediante una remuneración", "Cualquier actividad humana, remunerada o no", "Solo la actividad realizada en relación de dependencia estatal", "Únicamente el trabajo intelectual"], "correct": 0, "exp": ""}, {"tema": 6, "q": "La subordinación jurídica del trabajador consiste en:", "opts": ["La posibilidad del empleador de dirigir la conducta del trabajador hacia los objetivos de la empresa", "La imposibilidad del empleador de dar órdenes", "La independencia total del trabajador respecto del empleador", "El reparto de riesgos empresarios entre ambas partes"], "correct": 0, "exp": ""}, {"tema": 6, "q": "La subordinación económica implica que el trabajador:", "opts": ["No recibe el producto de su trabajo ni comparte el riesgo empresario, a cambio de una remuneración", "Participa de las ganancias y pérdidas de la empresa", "Es dueño de los medios de producción", "Asume el riesgo comercial de la actividad"], "correct": 0, "exp": ""}, {"tema": 6, "q": "El Derecho del Trabajo se caracteriza, entre otros rasgos, por ser:", "opts": ["Tuitivo (protector de la parte más débil de la relación laboral)", "Meramente supletorio del derecho civil", "Idéntico en su regulación al derecho comercial", "No autónomo respecto de otras ramas"], "correct": 0, "exp": ""}, {"tema": 6, "q": "El carácter protectorio del Derecho del Trabajo encuentra su fundamento constitucional en:", "opts": ["El artículo 14 bis de la Constitución Nacional", "El artículo 18 de la Constitución Nacional", "El artículo 75 inciso 22", "El artículo 5 de la Constitución Nacional"], "correct": 0, "exp": ""}, {"tema": 6, "q": "El Derecho del Trabajo puede dividirse en cuatro partes, entre ellas:", "opts": ["El derecho individual y el derecho colectivo del trabajo", "Solo el derecho penal laboral", "El derecho comercial y el derecho civil", "El derecho administrativo puro"], "correct": 0, "exp": ""}, {"tema": 6, "q": "El fundamento del carácter protectorio del derecho laboral (art. 9 LCT) radica en:", "opts": ["La desigualdad del poder negociador entre trabajador y empleador", "La igualdad absoluta de las partes contratantes", "La libre negociación sin intervención estatal", "La ausencia de subordinación en la relación de trabajo"], "correct": 0, "exp": ""}, {"tema": 7, "q": "El Código Procesal de Familia de San Juan corresponde a la:", "opts": ["Ley 2435-O", "Ley 2352-O", "Ley 754-O", "Ley 989-E"], "correct": 0, "exp": ""}, {"tema": 7, "q": "Según el artículo 706 del Código Civil y Comercial, los principios de los procesos de familia incluyen:", "opts": ["Tutela judicial efectiva, inmediación, buena fe y lealtad procesal, oficiosidad y oralidad", "Escritura pura y ausencia de inmediación", "Confidencialidad absoluta sin excepciones", "Impulso exclusivo de las partes sin intervención judicial"], "correct": 0, "exp": ""}, {"tema": 7, "q": "El artículo 3 del Código Procesal de Familia de San Juan agrega a los principios generales del CCyCN:", "opts": ["La celeridad y la confidencialidad", "La escritura y el formalismo", "La onerosidad del proceso", "La doble instancia obligatoria"], "correct": 0, "exp": ""}, {"tema": 7, "q": "La perspectiva de género en los procesos de familia, según el artículo 14 del CPF de San Juan:", "opts": ["Debe aplicarse expresamente para identificar desigualdades o relaciones de poder en función del género", "Es opcional y queda a criterio exclusivo de las partes", "Solo se aplica en causas penales", "No tiene fundamento constitucional ni convencional"], "correct": 0, "exp": ""}, {"tema": 7, "q": "El artículo 4 del Código Procesal de Familia de San Juan ordena garantizar el acceso a justicia especialmente a:", "opts": ["Personas en situación de vulnerabilidad", "Solo a quienes tengan patrocinio letrado privado", "Únicamente a mayores de edad", "Exclusivamente al Ministerio Público Fiscal"], "correct": 0, "exp": ""}, {"tema": 7, "q": "La oficiosidad en el proceso de familia (art. 709 CCyCN, art. 9 CPF) permite al juez:", "opts": ["Adoptar medidas necesarias para evitar la paralización del proceso y disponer medidas urgentes o cautelares", "Sustituir ilimitadamente la actividad de las partes en todo tipo de asuntos", "Actuar de oficio incluso en asuntos patrimoniales entre personas plenamente capaces", "Prescindir del derecho de defensa de las partes"], "correct": 0, "exp": ""}, {"tema": 7, "q": "El Derecho de las Familias reconoce actualmente:", "opts": ["La diversidad de formas de organización familiar, dentro de un marco de respeto a la dignidad humana", "Un único modelo familiar obligatorio", "Solo la familia matrimonial tradicional", "La exclusión de las uniones convivenciales"], "correct": 0, "exp": ""}, {"tema": 8, "q": "El derecho penal sustantivo se distingue del derecho procesal penal en que el primero:", "opts": ["Está constituido por el Código Penal, que establece los delitos y las penas", "Regula exclusivamente el modo de aplicación de la ley penal", "Se ocupa solo de la organización de los tribunales", "No incluye la Parte Especial del Código Penal"], "correct": 0, "exp": ""}, {"tema": 8, "q": "Conforme al artículo 75 inciso 12 de la Constitución Nacional, corresponde al Congreso de la Nación:", "opts": ["Dictar los Códigos Civil, Comercial, Penal, de Minería y del Trabajo y Seguridad Social", "Aplicar el derecho penal en cada provincia", "Designar a los jueces provinciales", "Reglamentar el proceso penal de cada provincia"], "correct": 0, "exp": ""}, {"tema": 8, "q": "El Código Procesal Penal Mixto de San Juan (aplicado en forma residual) corresponde a la:", "opts": ["Ley 754-O, sancionada en 2004 (antes Ley 7398)", "Ley 1851-O, sancionada en 2019", "Ley 2352-O", "Ley 633-E"], "correct": 0, "exp": ""}, {"tema": 8, "q": "El nuevo Código Procesal Penal Acusatorio Adversarial de San Juan corresponde a la:", "opts": ["Ley 1851-O", "Ley 754-O", "Ley 2353-O", "Ley 2179-E"], "correct": 0, "exp": ""}, {"tema": 8, "q": "Son delitos de acción privada, entre otros, conforme al artículo 73 del Código Penal:", "opts": ["Las calumnias e injurias", "El homicidio simple", "El robo agravado", "La estafa"], "correct": 0, "exp": ""}, {"tema": 8, "q": "El incumplimiento de los deberes de asistencia familiar constituye delito de acción privada cuando la víctima fuere:", "opts": ["El cónyuge", "Un menor sin representación legal", "Un tercero ajeno a la familia", "El Estado"], "correct": 0, "exp": ""}, {"tema": 8, "q": "En el sistema procesal penal acusatorio adversarial de San Juan (Ley 1851-O), la detención dispuesta por el fiscal no puede superar las:", "opts": ["Setenta y dos (72) horas", "Veinticuatro (24) horas", "Cuarenta y ocho (48) horas", "Noventa y seis (96) horas"], "correct": 0, "exp": ""}, {"tema": 8, "q": "El procedimiento especial de Flagrancia en el Código Procesal Penal de San Juan está regulado en los artículos:", "opts": ["419 a 434", "1 a 50", "754 a 800", "201 a 220"], "correct": 0, "exp": ""}, {"tema": 8, "q": "Un delito es definido, en sentido dogmático, como una conducta:", "opts": ["Típica, antijurídica, culpable y punible", "Solo típica y punible", "Meramente antijurídica sin más requisitos", "Culpable, aunque no esté prevista en la ley"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La Ley de Protección Integral para prevenir, sancionar y erradicar la violencia contra las mujeres es la:", "opts": ["Ley 26.485", "Ley 24.417", "Ley 26.061", "Ley 989-E"], "correct": 0, "exp": ""}, {"tema": 9, "q": "El artículo 5 de la Ley 26.485 enumera los tipos de violencia contra la mujer, entre los cuales se encuentra:", "opts": ["La violencia física, psicológica, sexual, económica y patrimonial, simbólica y política", "Solo la violencia física", "Únicamente la violencia económica", "La violencia exclusivamente mediática"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La violencia psicológica contra la mujer, según la Ley 26.485, incluye:", "opts": ["Amenaza, acoso, hostigamiento, humillación y manipulación que causen daño emocional", "Únicamente agresiones que dejen marcas físicas visibles", "Solo conductas cometidas por desconocidos", "Exclusivamente conductas ocurridas en el ámbito laboral"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La violencia económica y patrimonial contra la mujer comprende, entre otras conductas:", "opts": ["La limitación o control de sus ingresos y la percepción de un salario menor por igual tarea", "Solo el maltrato físico dentro del hogar", "Únicamente la violencia simbólica en medios de comunicación", "Solo conductas del ámbito público-político"], "correct": 0, "exp": ""}, {"tema": 9, "q": "Entre las modalidades de violencia previstas en el artículo 6 de la Ley 26.485 se encuentra la violencia:", "opts": ["Doméstica, institucional, laboral, obstétrica, mediática y en el espacio público, entre otras", "Únicamente doméstica", "Solo laboral", "Exclusivamente mediática"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La violencia obstétrica, conforme a la Ley 26.485, es aquella ejercida por:", "opts": ["El personal de salud sobre el cuerpo y los procesos reproductivos de las mujeres", "Un familiar directo de la mujer", "Un compañero de trabajo", "Un medio de comunicación"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La violencia doméstica contra las mujeres, según la Ley 26.485, es ejercida por:", "opts": ["Un integrante del grupo familiar, incluyendo relaciones vigentes o finalizadas, sin requerir convivencia", "Únicamente el cónyuge conviviente", "Solo un ascendiente directo", "Exclusivamente personas ajenas al grupo familiar"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La violencia institucional contra las mujeres, conforme a la Ley 26.485, es aquella que:", "opts": ["Realizan funcionarios o agentes públicos que retardan, obstaculizan o impiden el acceso a políticas públicas y derechos", "Se produce exclusivamente en el ámbito privado", "Solo puede cometerla un particular sin cargo público", "Se limita a agresiones físicas dentro de oficinas públicas"], "correct": 0, "exp": ""}, {"tema": 9, "q": "La violencia laboral contra las mujeres incluye, según la Ley 26.485:", "opts": ["Exigir test de embarazo o vulnerar la igual remuneración por igual tarea", "Solo el despido injustificado", "Únicamente el acoso sexual", "Solo la discriminación por antigüedad"], "correct": 0, "exp": ""}, {"tema": 9, "q": "El objeto de la Ley 26.485 incluye, entre otros fines:", "opts": ["La eliminación de la discriminación entre mujeres y varones y el acceso a la justicia de las mujeres que padecen violencia", "Regular exclusivamente el régimen patrimonial del matrimonio", "Sancionar únicamente delitos económicos", "Organizar el régimen electoral"], "correct": 0, "exp": ""}];
+
+</script>
+<script>
+(function(){
+  "use strict";
+
+  const ROMAN = {1:"I",2:"II",3:"III",4:"IV",5:"V",6:"VI",7:"VII",8:"VIII",9:"IX"};
+  const app = document.getElementById('app');
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function countByTema(temaId){
+    return QUESTIONS.filter(q=>q.tema===temaId).length;
+  }
+
+  // ---------------- STATE ----------------
+  let quiz = null; // {mode, temaId, title, items:[{...question, order:[shuffled opt idx map]}], current, timeLeft, timerId, finished}
+
+  function buildQuizItems(rawQuestions){
+    // shuffle option order per question, keep track of correct index after shuffle
+    return rawQuestions.map(q=>{
+      const idxs = shuffle([0,1,2,3]);
+      const opts = idxs.map(i=>q.opts[i]);
+      const correct = idxs.indexOf(q.correct);
+      return {
+        tema:q.tema, qtext:q.q, exp:q.exp||"",
+        opts, correct,
+        selected:null, answered:false
+      };
+    });
+  }
+
+  function startTemaQuiz(temaId, count){
+    const pool = QUESTIONS.filter(q=>q.tema===temaId);
+    const n = count==='all' ? pool.length : Math.min(count, pool.length);
+    const chosen = shuffle(pool).slice(0,n);
+    quiz = {
+      mode:'tema', temaId,
+      title: 'Tema ' + ROMAN[temaId] + ' · ' + TEMAS[temaId],
+      items: buildQuizItems(chosen),
+      current:0, timeLeft:null, timerId:null, finished:false, examMinutes:null
+    };
+    renderQuiz();
+  }
+
+  function startExam(){
+    const n = Math.min(100, QUESTIONS.length);
+    const chosen = shuffle(QUESTIONS).slice(0,n);
+    quiz = {
+      mode:'exam', temaId:null,
+      title:'Examen General · ' + n + ' preguntas',
+      items: buildQuizItems(chosen),
+      current:0, timeLeft:75*60, timerId:null, finished:false, examMinutes:75
+    };
+    startTimer();
+    renderQuiz();
+  }
+
+  function startTimer(){
+    stopTimer();
+    quiz.timerId = setInterval(()=>{
+      quiz.timeLeft--;
+      updateTimerDisplay();
+      if(quiz.timeLeft<=0){
+        stopTimer();
+        finishQuiz(true);
+      }
+    },1000);
+  }
+  function stopTimer(){
+    if(quiz && quiz.timerId){ clearInterval(quiz.timerId); quiz.timerId=null; }
+  }
+  function fmtTime(s){
+    const m = Math.floor(s/60), sec = s%60;
+    return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  }
+  function updateTimerDisplay(){
+    const el = document.getElementById('timer-display');
+    if(!el) return;
+    el.textContent = fmtTime(Math.max(0,quiz.timeLeft));
+    el.classList.toggle('low', quiz.timeLeft<=300);
+  }
+
+  // ---------------- RENDER: HOME ----------------
+  function renderHome(){
+    stopTimer();
+    quiz = null;
+    const totalQ = QUESTIONS.length;
+    let temaCards = '';
+    for(let t=1;t<=9;t++){
+      const c = countByTema(t);
+      const stepOptions = [10,20].filter(n=>n<c);
+      let optionsHtml = stepOptions.map(n=>`<option value="${n}">${n} preguntas</option>`).join('');
+      optionsHtml += `<option value="all" selected>Todas (${c})</option>`;
+      temaCards += `
+        <div class="tema-card">
+          <div class="roman">${ROMAN[t]}</div>
+          <div class="body">
+            <h3>${TEMAS[t]}</h3>
+            <div class="meta">${c} preguntas disponibles en el banco</div>
+          </div>
+          <div class="controls">
+            <select class="count-select" data-tema="${t}">
+              ${optionsHtml}
+            </select>
+            <button class="btn secondary" data-teoria="${t}">Teoría</button>
+            <button class="btn secondary" data-practice="${t}">Practicar</button>
+          </div>
+        </div>`;
+    }
+
+    app.innerHTML = `
+      <header class="top">
+        <div class="mark">Cuadernillo 2026<small>Poder Judicial de San Juan &middot; Preparación de concurso</small></div>
+      </header>
+
+      <p class="lede">Estudiá los <em>${9} temas</em> del programa con su resumen teórico y videos cortos,
+      practicá con preguntas aleatorias, o rendí el <em>examen general</em> en las mismas condiciones del
+      juzgado: 100 preguntas, 75 minutos y 71 respuestas correctas para aprobar.</p>
+
+      <div class="exam-cta">
+        <div class="num">100</div>
+        <div class="info">
+          <h2>Examen General</h2>
+          <p>Simulacro completo con preguntas de los nueve temas, mezcladas al azar.</p>
+          <div class="stats">
+            <span>&#9200; <b>75 min</b></span>
+            <span>&#10003; <b>71/100</b> para aprobar</span>
+            <span>&#128218; Banco de <b>${totalQ}</b> preguntas</span>
+          </div>
+        </div>
+        <button class="btn" id="start-exam">Iniciar examen</button>
+      </div>
+
+      <div class="section-title">Práctica por tema</div>
+      <div class="tema-grid">${temaCards}</div>
+
+      <footer class="note">Contenido elaborado a partir del Cuadernillo 2026. Herramienta de estudio informal, sin validez oficial.</footer>
+    `;
+
+    document.getElementById('start-exam').addEventListener('click', startExam);
+    app.querySelectorAll('[data-practice]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const t = parseInt(btn.getAttribute('data-practice'),10);
+        const sel = app.querySelector(`select[data-tema="${t}"]`);
+        const val = sel.value === 'all' ? 'all' : parseInt(sel.value,10);
+        startTemaQuiz(t, val);
+      });
+    });
+    app.querySelectorAll('[data-teoria]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const t = parseInt(btn.getAttribute('data-teoria'),10);
+        renderTeoria(t);
+      });
+    });
+  }
+
+  // ---------------- RENDER: TEORIA ----------------
+  function getYouTubeId(url){
+    const m = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+    return m ? m[1] : null;
+  }
+
+  function renderTeoria(t){
+    stopTimer();
+    const data = TEORIA[t];
+    if(!data){ renderHome(); return; }
+
+    const puntosHtml = data.puntos.map(p=>`<li>${p}</li>`).join('');
+
+    const recursosHtml = data.recursos.map(r=>{
+      if(r.tipo === 'video'){
+        const vid = getYouTubeId(r.url);
+        const frame = vid
+          ? `<div class="frame-wrap"><iframe src="https://www.youtube.com/embed/${vid}" title="${r.titulo}" allowfullscreen loading="lazy"></iframe></div>`
+          : '';
+        return `<div class="video-card">
+          ${frame}
+          <div class="vinfo">
+            <p class="vtitle">${r.titulo}</p>
+            <a href="${r.url}" target="_blank" rel="noopener">Ver en YouTube &rarr;</a>
+          </div>
+        </div>`;
+      }
+      const tag = r.tipo === 'canal' ? 'Canal de YouTube' : 'Documento oficial';
+      return `<div class="resource-card">
+        <div><span class="rtag">${tag}</span><div class="rtitle">${r.titulo}</div></div>
+        <a class="btn secondary" href="${r.url}" target="_blank" rel="noopener">Abrir</a>
+      </div>`;
+    }).join('');
+
+    app.innerHTML = `
+      <header class="top">
+        <div class="mark">Teoría &middot; Tema ${ROMAN[t]}<small>${TEMAS[t]}</small></div>
+        <button class="backlink" id="teoria-back">&larr; Volver</button>
+      </header>
+
+      <p class="theory-lead">${data.lead}</p>
+
+      <div class="section-title">Ideas clave</div>
+      <ul class="theory-list">${puntosHtml}</ul>
+
+      <div class="section-title">Videos y recursos cortos</div>
+      <div class="video-grid">${recursosHtml}</div>
+
+      <div class="result-actions">
+        <button class="btn secondary" id="teoria-back-2">Volver al inicio</button>
+        <button class="btn" id="teoria-practicar">Practicar este tema</button>
+      </div>
+
+      <footer class="note">Resumen elaborado como guía de estudio informal a partir de normativa y fuentes públicas; no reemplaza la lectura del Cuadernillo 2026 ni de los textos legales originales.</footer>
+    `;
+
+    document.getElementById('teoria-back').addEventListener('click', renderHome);
+    document.getElementById('teoria-back-2').addEventListener('click', renderHome);
+    document.getElementById('teoria-practicar').addEventListener('click', ()=>{
+      startTemaQuiz(t, 'all');
+    });
+  }
+
+  // ---------------- RENDER: QUIZ ----------------
+  function renderQuiz(){
+    const item = quiz.items[quiz.current];
+    const total = quiz.items.length;
+    const pct = Math.round((quiz.current)/total*100);
+
+    const timerHtml = quiz.mode==='exam'
+      ? `<div class="timer" id="timer-display">${fmtTime(quiz.timeLeft)}</div>`
+      : '';
+
+    const optsHtml = item.opts.map((opt,i)=>{
+      let cls = 'opt';
+      if(item.answered){
+        if(i===item.correct) cls+=' correct';
+        else if(i===item.selected) cls+=' incorrect';
+      } else if(item.selected===i){
+        cls+=' selected';
+      }
+      return `<button class="${cls}" data-opt="${i}" ${item.answered?'disabled':''}>
+        <span class="letter">${String.fromCharCode(97+i)})</span><span>${opt}</span>
+      </button>`;
+    }).join('');
+
+    const expHtml = (item.answered && item.exp) ? `<div class="exp">${item.exp}</div>` : '';
+
+    const isLast = quiz.current === total-1;
+    const nextLabel = isLast ? 'Finalizar' : 'Siguiente pregunta';
+
+    app.innerHTML = `
+      <header class="top">
+        <div class="mark">${quiz.title}</div>
+        <button class="backlink" id="abandon">Abandonar</button>
+      </header>
+
+      <div class="quiz-head">
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Pregunta ${quiz.current+1} de ${total}</span><span>${pct}%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        </div>
+        ${timerHtml}
+      </div>
+
+      <div class="q-card">
+        <div class="q-tema-tag">Tema ${ROMAN[item.tema]} &middot; ${TEMAS[item.tema]}</div>
+        <p class="q-text">${item.qtext}</p>
+        ${optsHtml}
+        ${expHtml}
+      </div>
+
+      <div class="quiz-actions">
+        <button class="btn" id="next-btn" ${item.answered?'':'disabled'}>${nextLabel}</button>
+      </div>
+    `;
+
+    if(quiz.mode==='exam') updateTimerDisplay();
+
+    app.querySelectorAll('.opt').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        if(item.answered) return;
+        item.selected = parseInt(b.getAttribute('data-opt'),10);
+        item.answered = true;
+        renderQuiz();
+      });
+    });
+
+    document.getElementById('next-btn').addEventListener('click', ()=>{
+      if(isLast){ finishQuiz(false); }
+      else { quiz.current++; renderQuiz(); }
+    });
+
+    document.getElementById('abandon').addEventListener('click', ()=>{
+      if(confirm('¿Abandonar esta sesión? Se perderá el progreso.')) renderHome();
+    });
+  }
+
+  // ---------------- FINISH / RESULTS ----------------
+  function finishQuiz(timeUp){
+    stopTimer();
+    quiz.finished = true;
+    quiz.timeUp = timeUp;
+    renderResults();
+  }
+
+  function renderResults(){
+    const items = quiz.items;
+    const total = items.length;
+    const correct = items.filter(it=>it.answered && it.selected===it.correct).length;
+    const answered = items.filter(it=>it.answered).length;
+    const pct = Math.round((correct/total)*100);
+
+    let verdictHtml = '';
+    if(quiz.mode==='exam'){
+      const passed = correct>=71;
+      verdictHtml = `<div class="verdict ${passed?'pass':'fail'}">${passed?'Aprobado':'No aprobado'}</div>
+        <div class="score">Respondiste correctamente <b>${correct}</b> de ${total} preguntas (mínimo para aprobar: 71)</div>`;
+    } else {
+      verdictHtml = `<div class="verdict ${pct>=70?'pass':'fail'}">${pct}% de aciertos</div>
+        <div class="score"><b>${correct}</b> correctas de ${total}</div>`;
+    }
+
+    const timeUpNote = quiz.timeUp ? `<p style="color:var(--bad);font-size:.85rem;">Se agotó el tiempo: las preguntas sin responder se contaron como incorrectas.</p>` : '';
+
+    const reviewHtml = items.map((it,i)=>{
+      const wasRight = it.answered && it.selected===it.correct;
+      const userAnsText = it.answered ? it.opts[it.selected] : '(sin responder)';
+      return `<div class="review-item ${wasRight?'right':'wrong'}">
+        <div class="rq">${i+1}. ${it.qtext}</div>
+        ${!wasRight ? `<div class="ra wrongline">Tu respuesta: ${userAnsText}</div>` : ''}
+        <div class="ra correctline">Correcta: ${it.opts[it.correct]}</div>
+        ${it.exp ? `<div class="ra">${it.exp}</div>` : ''}
+      </div>`;
+    }).join('');
+
+    app.innerHTML = `
+      <header class="top">
+        <div class="mark">${quiz.title}</div>
+      </header>
+
+      <div class="result-hero">
+        ${verdictHtml}
+        <div class="result-bars">
+          <div class="stat"><div class="n">${correct}</div><div class="l">Correctas</div></div>
+          <div class="stat"><div class="n">${answered-correct}</div><div class="l">Incorrectas</div></div>
+          <div class="stat"><div class="n">${total-answered}</div><div class="l">Sin responder</div></div>
+          <div class="stat"><div class="n">${pct}%</div><div class="l">Porcentaje</div></div>
+        </div>
+        ${timeUpNote}
+      </div>
+
+      <div class="result-actions">
+        <button class="btn secondary" id="back-home">Volver al inicio</button>
+        <button class="btn" id="retry">Repetir con nuevas preguntas</button>
+      </div>
+
+      <div class="section-title">Repaso de preguntas</div>
+      ${reviewHtml}
+
+      <div class="result-actions">
+        <button class="btn secondary" id="back-home-2">Volver al inicio</button>
+      </div>
+    `;
+
+    document.getElementById('back-home').addEventListener('click', renderHome);
+    document.getElementById('back-home-2').addEventListener('click', renderHome);
+    document.getElementById('retry').addEventListener('click', ()=>{
+      if(quiz.mode==='exam') startExam();
+      else startTemaQuiz(quiz.temaId, total);
+    });
+  }
+
+  renderHome();
+})();
+
+</script>
+</body>
+</html>

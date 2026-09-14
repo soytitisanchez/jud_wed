@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Judweb · Preparación para el ingreso al Poder Judicial</title>
+<meta name="description" content="Judweb: plataforma gratuita para prepararte para el ingreso al Poder Judicial. Teoría, cuestionarios, corrección de textos y mecanografía. Funciona con y sin conexión a internet.">
+<meta name="theme-color" content="#111a24">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icon-192.png">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+<style>
+  :root{
+    --ink:#111a24;
+    --panel:#16212e;
+    --panel-2:#1c2938;
+    --line:#2b3a4a;
+    --paper:#f4f1e9;
+    --brass:#c69a3a;
+    --brass-dim:#8a6e28;
+    --text:#e9e6dc;
+    --text-dim:#a9b3bd;
+    --good:#3f8f5f;
+    --radius:2px;
+    --serif: Georgia, 'Times New Roman', Times, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.5;
+    min-height:100vh;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 20px 80px;}
+
+  header.hero{
+    border-bottom:1px solid var(--line);
+    padding:34px 20px 30px;
+    margin-bottom:36px;
+    background:radial-gradient(circle at 15% 0%, #1b2a3c 0%, var(--ink) 60%);
+  }
+  header.hero .inner{max-width:1020px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .brand-mark{
+    width:52px;height:52px;flex-shrink:0;border:1px solid var(--brass-dim);border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;font-family:var(--serif);
+    font-size:1.7rem;color:var(--brass);background:var(--panel);
+  }
+  .brand-text h1{
+    font-family:var(--serif);font-size:1.9rem;margin:0;color:var(--paper);letter-spacing:.2px;
+  }
+  .brand-text .handle{
+    font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brass);margin-top:3px;
+  }
+  .hero-lede{
+    font-family:var(--serif);font-size:1.12rem;line-height:1.6;color:var(--text-dim);
+    max-width:62ch;margin:20px auto 0;
+  }
+  .hero-lede em{color:var(--brass);font-style:normal;}
+  .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;max-width:1020px;margin-left:auto;margin-right:auto;}
+  .badge{
+    font-size:.76rem;border:1px solid var(--line);border-radius:20px;padding:6px 14px;color:var(--text-dim);
+    display:flex;align-items:center;gap:6px;
+  }
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--good);display:inline-block;}
+
+  .section-title{
+    font-family:var(--serif);color:var(--paper);font-size:1.05rem;
+    margin:0 0 16px;padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+
+  .app-grid{
+    display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:40px;
+  }
+  @media (min-width:680px){
+    .app-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  .app-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 22px;display:flex;flex-direction:column;gap:12px;
+    text-decoration:none;color:inherit;transition:border-color .15s ease;
+  }
+  .app-card:hover{border-color:var(--brass-dim);}
+  .app-card .icon{
+    font-family:var(--serif);font-size:1.6rem;color:var(--brass);
+    width:44px;height:44px;border:1px solid var(--brass-dim);border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .app-card h3{margin:0;font-size:1.05rem;color:var(--paper);font-weight:600;}
+  .app-card p{margin:0;font-size:.86rem;color:var(--text-dim);line-height:1.55;flex:1;}
+  .app-card .go{
+    font-size:.82rem;color:var(--brass);font-weight:600;display:flex;align-items:center;gap:6px;margin-top:6px;
+  }
+  .app-card .offline-tag{
+    font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--text-dim);
+    border:1px solid var(--line);border-radius:20px;padding:3px 10px;align-self:flex-start;
+  }
+
+  .install-panel{
+    background:linear-gradient(135deg,var(--panel-2),var(--panel));
+    border:1px solid var(--brass-dim);border-radius:var(--radius);
+    padding:22px 26px;margin-bottom:40px;display:none;gap:16px;align-items:center;flex-wrap:wrap;
+  }
+  .install-panel.show{display:flex;}
+  .install-panel .info{flex:1;min-width:220px;}
+  .install-panel h2{margin:0 0 6px;font-family:var(--serif);font-size:1.1rem;color:var(--paper);font-weight:normal;}
+  .install-panel p{margin:0;color:var(--text-dim);font-size:.86rem;}
+  .btn{
+    font-family:var(--sans);font-size:.88rem;font-weight:600;
+    background:var(--brass);color:#1a1305;border:none;
+    padding:11px 20px;border-radius:var(--radius);cursor:pointer;white-space:nowrap;
+  }
+  .btn:hover{background:#d9ac47;}
+
+  .howto{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:40px;
+  }
+  .howto ol{margin:0;padding-left:20px;color:var(--text-dim);font-size:.88rem;line-height:1.8;}
+  .howto strong{color:var(--paper);}
+
+  footer.note{
+    margin-top:40px;color:var(--text-dim);font-size:.8rem;border-top:1px solid var(--line);
+    padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  footer.note .credit{color:var(--brass);}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <div class="brand-mark">J</div>
+    <div class="brand-text">
+      <h1>Judweb</h1>
+      <div class="handle">@Sanchez Cintia</div>
+    </div>
+  </div>
+  <p class="hero-lede">Plataforma <em>gratuita</em> para quienes se preparan para el ingreso al Poder Judicial:
+  repasá teoría, respondé cuestionarios, corregí textos judiciales y entrená tu mecanografía —
+  todo en un solo lugar, <em>con o sin conexión a internet</em>.</p>
+  <div class="hero-badges">
+    <span class="badge"><span class="dot"></span>100% gratuita</span>
+    <span class="badge"><span class="dot"></span>Funciona sin internet una vez instalada</span>
+    <span class="badge"><span class="dot"></span>Pensada para celular y PC</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="install-panel" id="installPanel">
+    <div class="info">
+      <h2>Instalá Judweb en tu celular o PC</h2>
+      <p>Así podés abrirla como una app, con ícono propio y sin necesidad de datos ni wifi cada vez.</p>
+    </div>
+    <button class="btn" id="installBtn">Instalar Judweb</button>
+  </div>
+
+  <div class="section-title">Elegí con qué practicar</div>
+  <div class="app-grid">
+    <a class="app-card" href="./apps/cuadernillo/index.html">
+      <div class="icon">I–IX</div>
+      <h3>Cuadernillo 2026</h3>
+      <p>Los 9 temas del programa del Poder Judicial de San Juan: resumen teórico, videos cortos,
+      práctica por tema y examen general de 100 preguntas a tiempo.</p>
+      <span class="offline-tag">Teoría y práctica: sin internet · Videos: con internet</span>
+      <span class="go">Abrir cuadernillo →</span>
+    </a>
+
+    <a class="app-card" href="./apps/corrector/index.html">
+      <div class="icon">Aa</div>
+      <h3>Corrector de textos judiciales</h3>
+      <p>Corregí la ortografía de textos judiciales reales contra reloj, con estadísticas en vivo
+      mientras vas corrigiendo. 1000 ejercicios distintos.</p>
+      <span class="offline-tag">Funciona sin internet</span>
+      <span class="go">Abrir corrector →</span>
+    </a>
+
+    <a class="app-card" href="./apps/mecanografia/index.html">
+      <div class="icon">⌨</div>
+      <h3>Mecanografía</h3>
+      <p>Practicá velocidad y precisión de tipeo con textos de estilo judicial. Medí tus palabras
+      por minuto y tu porcentaje de precisión.</p>
+      <span class="offline-tag">Funciona sin internet</span>
+      <span class="go">Abrir mecanografía →</span>
+    </a>
+  </div>
+
+  <div class="howto">
+    <div class="section-title" style="border:none;margin-bottom:10px;">Cómo usarla sin internet</div>
+    <ol>
+      <li>Abrí Judweb <strong>una primera vez</strong> con conexión a internet o wifi (para que el celular o la PC guarden la plataforma).</li>
+      <li>Si te aparece el botón <strong>«Instalar Judweb»</strong> de arriba, tocalo: así queda como una app con ícono en tu pantalla de inicio.</li>
+      <li>Desde ese momento podés abrirla las veces que quieras <strong>sin gastar datos ni necesitar wifi</strong> — salvo los videos de YouTube del Cuadernillo, que sí necesitan conexión para reproducirse.</li>
+    </ol>
+  </div>
+
+  <footer class="note">
+    <span>Herramienta de estudio informal, sin validez oficial ni vínculo con el Poder Judicial de San Juan.</span>
+    <span class="credit">Judweb · Cintia Sánchez</span>
+  </footer>
+</div>
+
+<script>
+  // Registra el service worker para que la plataforma funcione sin internet
+  // después de la primera visita (requiere que el sitio esté servido por https).
+  if ('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+
+  // Botón de instalación (Add to Home Screen / PWA install)
+  let deferredPrompt = null;
+  const installPanel = document.getElementById('installPanel');
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installPanel.classList.add('show');
+  });
+
+  installBtn && installBtn.addEventListener('click', async () => {
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installPanel.classList.remove('show');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installPanel.classList.remove('show');
+  });
+</script>
+</body>
+</html>

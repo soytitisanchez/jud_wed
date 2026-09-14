@@ -1,0 +1,17 @@
+{
+  "name": "Judweb",
+  "short_name": "Judweb",
+  "description": "Plataforma gratuita de preparación para el ingreso al Poder Judicial: teoría, cuestionarios, corrección de textos y mecanografía.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#111a24",
+  "theme_color": "#111a24",
+  "lang": "es-AR",
+  "icons": [
+    { "src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
